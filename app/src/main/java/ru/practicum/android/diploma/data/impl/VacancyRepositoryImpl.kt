@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.data.impl
 
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
@@ -52,6 +53,7 @@ class VacancyRepositoryImpl(
         } else {
             val request = Request.VacancyRequest(vacancyId)
             val response = networkClient.doRequest(request) as VacancyResponse
+            Log.d("TestSearch", "VacancyResponse: ${response.vacancy}")
             result = if (response.resultCode == SUCCESSFUL_REQUEST) {
                 Resource.Success(convertFromVacancyDto(response.vacancy))
             } else {
@@ -79,7 +81,8 @@ class VacancyRepositoryImpl(
             vacancy.employment?.name,
             vacancy.experience?.name,
             vacancy.description,
-            vacancy.alternateUrl
+            vacancy.alternateUrl,
+            vacancy.isFavorite
         )
     }
 
@@ -96,7 +99,6 @@ class VacancyRepositoryImpl(
             employment = this.employment,
             experience = this.experience,
             isFavorite = true
-
         )
     }
 }
