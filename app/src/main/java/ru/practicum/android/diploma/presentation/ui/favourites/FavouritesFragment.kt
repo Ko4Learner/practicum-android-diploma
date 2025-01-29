@@ -38,7 +38,7 @@ class FavouritesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         onClickVacancy = debounce<Vacancy>(
-            CLICK_DEBOUNCE_DAYLY,
+            CLICK_DEBOUNCE_DELAY,
             viewLifecycleOwner.lifecycleScope,
             false
         ) { vacancy ->
@@ -92,7 +92,7 @@ class FavouritesFragment : Fragment() {
 
     companion object {
         const val KEY_VACANCY = "KEY_VACANCY"
-        const val CLICK_DEBOUNCE_DAYLY = 0L
+        const val CLICK_DEBOUNCE_DELAY = 1000L
         fun newInstance() = FavouritesFragment()
     }
 }
