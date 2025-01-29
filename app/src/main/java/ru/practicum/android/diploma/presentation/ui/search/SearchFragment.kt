@@ -30,7 +30,6 @@ class SearchFragment : Fragment() {
     private var onClickVacancy: (Vacancy) -> Unit = {}
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,7 +54,8 @@ class SearchFragment : Fragment() {
         searchAdapter.onItemClick = { vacancy -> onClickVacancy(vacancy) }
 
         binding.searchField.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) =
+                Unit
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (!s.isNullOrEmpty()) {
@@ -89,9 +89,10 @@ class SearchFragment : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
 
                 if (dy > 0) {
-                    val pos = (binding.recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val pos =
+                        (binding.recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = searchAdapter.itemCount
-                    if (pos >= itemsCount-1) {
+                    if (pos >= itemsCount - 1) {
                         viewModel.onLastItemReached()
                     }
                 }
@@ -103,30 +104,36 @@ class SearchFragment : Fragment() {
         clearScreen()
         when (state) {
             is SearchScreenState.ServerError -> {
+                binding.searchCentralPlaceholderImg.isVisible = false
                 Log.d("mytag", "SearchScreenState.ServerError $state")
             }
 
-            is SearchScreenState.Loading->{
-                clearScreen()
+            is SearchScreenState.Loading -> {
+                binding.searchCentralPlaceholderImg.isVisible = false
                 binding.progressBar.isVisible = true
             }
 
             is SearchScreenState.ShowVacancies -> {
-                clearScreen()
+                binding.searchCentralPlaceholderImg.isVisible = false
                 binding.recyclerView.isVisible = true
                 searchAdapter.updateItems(state.vacancies)
             }
+
             is SearchScreenState.LoadNextPage -> {
+                binding.searchCentralPlaceholderImg.isVisible = false
                 binding.progressBar.isVisible = true
             }
-            else -> {Log.d("mytag", "branch else state:$state")}
+
+            else -> {
+                Log.d("mytag", "branch else state:$state")
+            }
         }
     }
 
     private fun clearScreen() {
         binding.apply {
             progressBar.isVisible = false
-            searchCentralPlaceholderImg.isVisible = false
+            searchCentralPlaceholderImg.isVisible = true
             errorMessagePlaceholder.isVisible = false
             searchResult.isVisible = false
             recyclerView.isVisible = false
