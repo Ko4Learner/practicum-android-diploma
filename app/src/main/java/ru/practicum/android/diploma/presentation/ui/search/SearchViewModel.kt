@@ -14,7 +14,6 @@ import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.debounce
 
-
 class SearchViewModel(
     private val vacancyInteractor: VacancyInteractor
 ) : ViewModel() {
@@ -85,15 +84,15 @@ class SearchViewModel(
 
         }
         screenState.postValue(state)
-        isPadding=false
+        isPadding = false
 
     }
 
     fun onLastItemReached() {
-        if((page<(pages-1)) && !isPadding){
-            isPadding=true
-            screenState.value=SearchScreenState.LoadNextPage
-            startSearch(lastSearch,++page)
+        if ((page < (pages - 1)) && !isPadding) {
+            isPadding = true
+            screenState.value = SearchScreenState.LoadNextPage
+            startSearch(lastSearch, ++page)
         }
         Log.d("mytag", "---onLastItemReached:--- ")
     }
