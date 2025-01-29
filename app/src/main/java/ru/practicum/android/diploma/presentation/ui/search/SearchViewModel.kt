@@ -19,16 +19,13 @@ class SearchViewModel(
     private val vacancyInteractor: VacancyInteractor
 ) : ViewModel() {
 
-    companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 5000L
-    }
-
     private var lastSearch: String = ""
     private var page = 0
     private var pages = 0
     var isNextPageLoading = false
     private val vacancies = ArrayList<Vacancy>()
     private var isPadding = false
+
     private val screenState = MutableLiveData<SearchScreenState>(SearchScreenState.StartScreen)
     fun getScreenState(): LiveData<SearchScreenState> = screenState
 
@@ -101,4 +98,7 @@ class SearchViewModel(
         Log.d("mytag", "---onLastItemReached:--- ")
     }
 
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY = 5000L
+    }
 }
