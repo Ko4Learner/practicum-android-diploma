@@ -30,7 +30,6 @@ class SearchFragment : Fragment() {
     private var onClickVacancy: (Vacancy) -> Unit = {}
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -91,7 +90,7 @@ class SearchFragment : Fragment() {
                 if (dy > 0) {
                     val pos = (binding.recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = searchAdapter.itemCount
-                    if (pos >= itemsCount-1) {
+                    if (pos >= itemsCount - 1) {
                         viewModel.onLastItemReached()
                     }
                 }
@@ -106,7 +105,7 @@ class SearchFragment : Fragment() {
                 Log.d("mytag", "SearchScreenState.ServerError $state")
             }
 
-            is SearchScreenState.Loading->{
+            is SearchScreenState.Loading -> {
                 clearScreen()
                 binding.progressBar.isVisible = true
             }
@@ -116,10 +115,14 @@ class SearchFragment : Fragment() {
                 binding.recyclerView.isVisible = true
                 searchAdapter.updateItems(state.vacancies)
             }
+
             is SearchScreenState.LoadNextPage -> {
                 binding.progressBar.isVisible = true
             }
-            else -> {Log.d("mytag", "branch else state:$state")}
+
+            else -> {
+                Log.d("mytag", "branch else state:$state")
+            }
         }
     }
 

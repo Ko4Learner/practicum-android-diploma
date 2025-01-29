@@ -29,6 +29,7 @@
     <style name="Toolbar" parent="@style/TextMedium_22_500">
         <item name="maxLines">1</item>
         <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="ButtonSelect" parent="@style/TextMedium_22_500">
@@ -58,6 +59,14 @@
         <item name="android:radius">12dp</item>
         <item name="android:paddingVertical">4dp</item>
         <item name="android:paddingHorizontal">12dp</item>
+    </style>
+
+    <style name="textViewFragmentTeam" parent="TextMedium_16_500">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/margin_16</item>
+        <item name="android:paddingStart">@dimen/padding_16</item>
+        <item name="android:paddingEnd">@dimen/padding_8</item>
     </style>
 
     <style name="mainSearchField">
