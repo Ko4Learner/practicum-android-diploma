@@ -43,7 +43,6 @@ open class FavouritesRepositoryImpl(
             employment = this.employment,
             experience = this.experience,
             isFavorite = true
-
         )
     }
 

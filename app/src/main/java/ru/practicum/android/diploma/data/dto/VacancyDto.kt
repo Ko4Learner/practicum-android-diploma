@@ -13,5 +13,6 @@ data class VacancyDto(
     val experience: ExperienceDto?,
     val description: String?,
     @SerializedName("alternate_url")
-    val alternateUrl: String
+    val alternateUrl: String,
+    var isFavorite: Boolean
 )
