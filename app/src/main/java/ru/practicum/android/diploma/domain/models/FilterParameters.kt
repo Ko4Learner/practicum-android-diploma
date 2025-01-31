@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.domain.models
 
 import android.util.Log
 
-data class FilterParameters(
+class FilterParameters(
     var country: String? = null,
     var area: String? = null,
     var professionalRole: String? = null,
@@ -23,7 +23,9 @@ data class FilterParameters(
         result[PAGE_QUERY] = page.toString()
         if (area != null) {
             result[AREA_QUERY] = area!!
-        } else if (country != null) result[AREA_QUERY] = country!!
+        } else {
+            if (country != null) result[AREA_QUERY] = country!!
+        }
         if (expectedSalary != null && expectedSalary != 0) result[SALARY_QUERY] = expectedSalary.toString()
         if (onlyWithSalary != null) result[ONLY_WITH_SALARY_QUERY] = onlyWithSalary.toString()
         Log.d("RETROFIT_LOG", "$result")
