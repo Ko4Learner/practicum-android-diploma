@@ -14,12 +14,12 @@ val interactorModule = module {
         FavouritesInteractorImpl(get())
     }
 
-    single<FilterParametersInteractor> {
-        FilterParametersInteractorImpl(get())
-    }
-
     factory<VacancyInteractor> {
         VacancyInteractorImpl(get())
+    }
+
+    single<FilterParametersInteractor> {
+        FilterParametersInteractorImpl(get())
     }
 
 }
