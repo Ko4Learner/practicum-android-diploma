@@ -28,6 +28,12 @@ class SearchViewModel(
     private val screenState = MutableLiveData<SearchScreenState>(SearchScreenState.StartScreen)
     fun getScreenState(): LiveData<SearchScreenState> = screenState
 
+    private val screenToast = MutableLiveData<SingleState>(SingleState.NoActions)
+    fun getScreenToast(): LiveData<SingleState> = screenToast
+    fun resetScreenToast() {
+        screenToast.value = SingleState.NoActions
+    }
+
     val searchDebounce = debounce<String>(
         SEARCH_DEBOUNCE_DELAY,
         viewModelScope,
@@ -60,16 +66,18 @@ class SearchViewModel(
     }
 
     private fun resultHandler(result: Resource<Page>) {
-        val state = when (result) {
+        when (result) {
             is Resource.Error -> {
                 if ((!isPadding) && (result.message == BAD_REQUEST)) {
-                    SearchScreenState.ServerError
+                    screenState.postValue(SearchScreenState.ServerError)
                 } else if ((!isPadding) && (result.message == CONNECT_ERR)) {
-                    SearchScreenState.InternetConnError
+                    screenState.postValue(SearchScreenState.InternetConnError)
                 } else if ((isPadding) && (result.message == BAD_REQUEST)) {
-                    SearchScreenState.PagingErrServer
+                    screenToast.postValue(SingleState.PagingErrServer)
+                    SearchScreenState.NoActions
                 } else {
-                    SearchScreenState.PagingErrInternet
+                    screenToast.postValue(SingleState.PagingErrInternet)
+                    SearchScreenState.NoActions
                 }
             }
 
@@ -81,14 +89,13 @@ class SearchViewModel(
                 pages = result.data.pages
                 vacancies.addAll(result.data.vacancies)
                 if (vacancies.isEmpty()) {
-                    SearchScreenState.NoVacancies
+                    screenState.postValue(SearchScreenState.NoVacancies)
                 } else {
-                    SearchScreenState.ShowVacancies(result.data.copy(vacancies = vacancies))
+                    screenState.postValue(SearchScreenState.ShowVacancies(result.data.copy(vacancies = vacancies)))
                 }
             }
-
         }
-        screenState.postValue(state)
+       // screenState.postValue(state)
         isPadding = false
 
     }

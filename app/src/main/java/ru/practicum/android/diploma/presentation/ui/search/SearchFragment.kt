@@ -83,6 +83,21 @@ class SearchFragment : Fragment() {
         viewModel.getScreenState().observe(viewLifecycleOwner) { state ->
             renderScreen(state)
         }
+        viewModel.getScreenToast().observe(viewLifecycleOwner) { state ->
+            when(state){
+                is SingleState.PagingErrServer->{
+                    Toast.makeText(requireContext(),"Произошла ошибка",Toast.LENGTH_LONG).show()
+                    binding.progressBar.isVisible=false
+                    viewModel.resetScreenToast()
+                }
+                is SingleState.PagingErrInternet -> {
+                    Toast.makeText(requireContext(),"Проверьте подключение к интернету",Toast.LENGTH_LONG).show()
+                    binding.progressBar.isVisible=false
+                    viewModel.resetScreenToast()
+                }
+                is SingleState.NoActions -> {}
+            }
+        }
         binding.iconSearchField.setOnClickListener { binding.searchField.setText(getString(R.string.empty_string)) }
 
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -125,15 +140,10 @@ class SearchFragment : Fragment() {
             is SearchScreenState.NoVacancies -> {
                 renderNoVacancies()
             }
-            is SearchScreenState.PagingErrInternet -> {
-                renderPaggingErrInternet()
-            }
-            is SearchScreenState.PagingErrServer -> {
-                renderPaggingErrServer()
-            }
             is SearchScreenState.InternetConnError -> {
                 renderInternetConnError()
             }
+            SearchScreenState.NoActions -> {}
         }
     }
 
@@ -144,17 +154,6 @@ class SearchFragment : Fragment() {
                 errorMessageAndImg.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.no_internet, 0, 0)
                 errorMessageAndImg.isVisible=true
             }
-    }
-
-    private fun renderPaggingErrServer() {
-        Toast.makeText(requireContext(),"Произошла ошибка",Toast.LENGTH_LONG).show()
-        binding.progressBar.isVisible=false
-    }
-
-    private fun renderPaggingErrInternet() {
-        Toast.makeText(requireContext(),"Проверьте подключение к интернету",Toast.LENGTH_LONG).show()
-        binding.recyclerView.isVisible=true
-        binding.progressBar.isVisible=false
     }
 
     private fun renderNoVacancies() {

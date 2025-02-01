@@ -9,8 +9,8 @@ sealed class SearchScreenState {
     data object InternetConnError : SearchScreenState()
     data object ServerError : SearchScreenState()
     data object NoVacancies : SearchScreenState()
-    data object PagingErrInternet : SearchScreenState()
     data object PagingSuccess : SearchScreenState()
-    data object PagingErrServer : SearchScreenState()
+    data object NoActions : SearchScreenState()
     data class ShowVacancies(val page: Page) : SearchScreenState()
+
 }
