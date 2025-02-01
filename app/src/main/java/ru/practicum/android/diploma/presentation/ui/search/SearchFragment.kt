@@ -222,12 +222,11 @@ class SearchFragment : Fragment() {
         }
     }
 
-
     private fun getMessage(num: Int): String {
         val i = num % NUMBER_100
         val i1 = i % NUMBER_10
         val i2 = i / NUMBER_10
-        val range= listOf(NUMBER_2, NUMBER_3, NUMBER_4)
+        val range = listOf(NUMBER_2, NUMBER_3, NUMBER_4)
         val out = if (i1 == NUMBER_1 && i2 != NUMBER_1) {
             "Найдена $num вакансия"
         } else if (i1 in range && i2 != NUMBER_1) {
