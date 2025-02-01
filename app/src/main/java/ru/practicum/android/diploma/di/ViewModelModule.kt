@@ -25,3 +25,4 @@ val viewModelModule = module {
     single { FilterParameters() }
 
 }
+
