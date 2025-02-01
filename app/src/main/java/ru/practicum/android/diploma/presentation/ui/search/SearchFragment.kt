@@ -222,17 +222,19 @@ class SearchFragment : Fragment() {
         }
     }
 
+
     private fun getMessage(num: Int): String {
-        val i = num % 100
-        val i1 = i % 10
-        val i2 = i / 10
-        val out = if (i1 == 1 && i2 != 1) {
+        val constant100 = 100
+        val constant10 = 10
+        val constant1 = 1
+        val i = num % constant100
+        val i1 = i % constant10
+        val i2 = i / constant10
+        val out = if (i1 == constant1 && i2 != constant1) {
             "Найдена $num вакансия"
-        }
-        else if (i1 in 2..4 && i2 != 1) {
+        } else if (i1 in 2..4 && i2 != constant1) {
             "Найдено $num вакансии"
-        }
-        else {
+        } else {
             "Найдено $num вакансий"
         }
         return out

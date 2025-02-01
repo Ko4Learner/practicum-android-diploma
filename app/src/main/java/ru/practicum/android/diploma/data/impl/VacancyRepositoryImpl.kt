@@ -31,7 +31,7 @@ class VacancyRepositoryImpl(
         val request = Request.VacanciesRequest(options)
         val response = networkClient.doRequest(request)
         val result = if (response.resultCode == SUCCESSFUL_REQUEST) {
-            with(response as  VacanciesResponse){
+            with(response as VacanciesResponse) {
                 Resource.Success(
                     Page(
                         items.map { convertFromVacancyDto(it) },

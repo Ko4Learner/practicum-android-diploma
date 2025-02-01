@@ -25,8 +25,7 @@ class RetrofitNetworkClient(
     override suspend fun doRequest(dto: Request): Response {
         if (!isConnected(context)) {
             return Response().apply { resultCode = CONNECT_ERR }
-        }
-        else {
+        } else {
             return withContext(Dispatchers.IO) {
                 try {
                     val resp = when (dto) {

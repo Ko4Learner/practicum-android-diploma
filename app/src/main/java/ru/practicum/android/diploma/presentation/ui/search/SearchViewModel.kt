@@ -67,11 +67,11 @@ class SearchViewModel(
     private fun resultHandler(result: Resource<Page>) {
         when (result) {
             is Resource.Error -> {
-                if ((!isPadding) && (result.message == BAD_REQUEST)) {
+                if (!isPadding && result.message == BAD_REQUEST) {
                     screenState.postValue(SearchScreenState.ServerError)
-                } else if ((!isPadding) && (result.message == CONNECT_ERR)) {
+                } else if (!isPadding && result.message == CONNECT_ERR) {
                     screenState.postValue(SearchScreenState.InternetConnError)
-                } else if ((isPadding) && (result.message == BAD_REQUEST)) {
+                } else if (isPadding && result.message == BAD_REQUEST) {
                     screenToast.postValue(SingleState.PagingErrServer)
                     SearchScreenState.NoActions
                 } else {
@@ -94,14 +94,12 @@ class SearchViewModel(
                 }
             }
         }
-
-       // screenState.postValue(state)
         isPadding = false
 
     }
 
     fun onLastItemReached() {
-        if ((page < (pages - 1)) && !isPadding) {
+        if (page < (pages - 1) && !isPadding) {
             isPadding = true
             screenState.value = SearchScreenState.PagingSuccess
             startSearch(lastSearch, ++page)
