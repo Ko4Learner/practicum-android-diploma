@@ -26,14 +26,14 @@
 
     <string name="enter_the_amount" translatable="false">Введите сумму</string>
     <string name="enter_industry" translatable="false">Введите отрасль</string>
-    
+
     <string name="the_expected_salary" translatable="false">Ожидаемая зарплата</string>
 
     <string name="industry" translatable="false">Отрасль</string>
     <string name="workplace" translatable="false">Место работы</string>
     <string name="country" translatable="false">Страна</string>
     <string name="region" translatable="false">Регион</string>
-    
+
     <string name="apply" translatable="false">Применить</string>
     <string name="reset" translatable="false">Сбросить</string>
 
@@ -64,5 +64,7 @@
     <string name="item_vacancy_salary_to">до %1$s %2$s</string>
     <string name="item_vacancy_salary_from">от %1$s %2$s</string>
     <string name="item_vacancy_salary_from_to">от %1$s до %2$s %3$s</string>
+    <string name="enter_region">Введите регион</string>
+    <string name="choice">Выбрать</string>
 
 </resources>
