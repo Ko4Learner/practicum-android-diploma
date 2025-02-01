@@ -68,7 +68,9 @@ class VacancyRepositoryImpl(
     private fun convertFromVacancyDto(vacancy: VacancyDto): Vacancy {
         val salary = if (vacancy.salary != null) {
             Salary(
-                vacancy.salary.currency, vacancy.salary.from, vacancy.salary.to
+                vacancy.salary.currency,
+                vacancy.salary.from,
+                vacancy.salary.to
             )
         } else {
             null

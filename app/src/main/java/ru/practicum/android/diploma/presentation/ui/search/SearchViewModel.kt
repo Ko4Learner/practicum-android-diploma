@@ -14,7 +14,6 @@ import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.debounce
 
-
 class SearchViewModel(
     private val vacancyInteractor: VacancyInteractor
 ) : ViewModel() {
@@ -95,6 +94,7 @@ class SearchViewModel(
                 }
             }
         }
+
        // screenState.postValue(state)
         isPadding = false
 
