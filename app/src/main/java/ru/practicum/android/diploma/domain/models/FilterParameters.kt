@@ -1,7 +1,5 @@
 package ru.practicum.android.diploma.domain.models
 
-import android.util.Log
-
 class FilterParameters(
     var country: String? = null,
     var area: String? = null,
@@ -10,6 +8,7 @@ class FilterParameters(
     var onlyWithSalary: Boolean? = null
 ) {
     companion object {
+        private const val PROFESSIONAL_ROLE = "professional_role"
         private const val ONLY_WITH_SALARY_QUERY = "only_with_salary"
         private const val SALARY_QUERY = "salary"
         private const val AREA_QUERY = "area"
@@ -28,7 +27,7 @@ class FilterParameters(
         }
         if (expectedSalary != null && expectedSalary != 0) result[SALARY_QUERY] = expectedSalary.toString()
         if (onlyWithSalary != null) result[ONLY_WITH_SALARY_QUERY] = onlyWithSalary.toString()
-        Log.d("RETROFIT_LOG", "$result")
+        if (professionalRole != null) result[PROFESSIONAL_ROLE] = professionalRole!!
         return result
     }
 }
