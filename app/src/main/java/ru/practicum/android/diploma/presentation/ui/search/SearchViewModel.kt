@@ -22,7 +22,6 @@ class SearchViewModel(
     private var lastSearch: String = ""
     private var page = 0
     private var pages = 0
-    var isNextPageLoading = false
     private val vacancies = ArrayList<Vacancy>()
     private var isPadding = false
 
@@ -63,10 +62,14 @@ class SearchViewModel(
     private fun resultHandler(result: Resource<Page>) {
         val state = when (result) {
             is Resource.Error -> {
-                if (!isPadding) {
+                if ((!isPadding) && (result.message == BAD_REQUEST)) {
                     SearchScreenState.ServerError
+                } else if ((!isPadding) && (result.message == CONNECT_ERR)) {
+                    SearchScreenState.InternetConnError
+                } else if ((isPadding) && (result.message == BAD_REQUEST)) {
+                    SearchScreenState.PagingErrServer
                 } else {
-                    SearchScreenState.ErrInPagging
+                    SearchScreenState.PagingErrInternet
                 }
             }
 
@@ -78,27 +81,30 @@ class SearchViewModel(
                 pages = result.data.pages
                 vacancies.addAll(result.data.vacancies)
                 if (vacancies.isEmpty()) {
-                    SearchScreenState.EmptyList
+                    SearchScreenState.NoVacancies
+                } else {
+                    SearchScreenState.ShowVacancies(result.data.copy(vacancies = vacancies))
                 }
-                SearchScreenState.ShowVacancies(vacancies)
             }
 
         }
         screenState.postValue(state)
-        isPadding=false
+        isPadding = false
 
     }
 
     fun onLastItemReached() {
-        if((page<(pages-1)) && !isPadding){
-            isPadding=true
-            screenState.value=SearchScreenState.LoadNextPage
-            startSearch(lastSearch,++page)
+        if ((page < (pages - 1)) && !isPadding) {
+            isPadding = true
+            screenState.value = SearchScreenState.PagingSuccess
+            startSearch(lastSearch, ++page)
         }
         Log.d("mytag", "---onLastItemReached:--- ")
     }
 
     companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 5000L
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val BAD_REQUEST = "400"
+        private const val CONNECT_ERR = "300"
     }
 }

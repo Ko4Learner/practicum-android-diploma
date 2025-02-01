@@ -29,16 +29,18 @@ class VacancyRepositoryImpl(
 
     override fun getVacancies(options: Map<String, String>): Flow<Resource<Page>> = flow {
         val request = Request.VacanciesRequest(options)
-        val response = networkClient.doRequest(request) as VacanciesResponse
+        val response = networkClient.doRequest(request)
         val result = if (response.resultCode == SUCCESSFUL_REQUEST) {
-            Resource.Success(
-                Page(
-                    response.items.map { convertFromVacancyDto(it) },
-                    response.page,
-                    response.pages,
-                    response.found
+            with(response as  VacanciesResponse){
+                Resource.Success(
+                    Page(
+                        items.map { convertFromVacancyDto(it) },
+                        page,
+                        pages,
+                        found
+                    )
                 )
-            )
+            }
         } else {
             Resource.Error("${response.resultCode}")
         }

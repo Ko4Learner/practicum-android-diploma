@@ -1,14 +1,16 @@
 package ru.practicum.android.diploma.presentation.ui.search
 
-import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.Page
 
 sealed class SearchScreenState {
     data object StartScreen : SearchScreenState()
+    data object EmptyScreen : SearchScreenState()
     data object Loading : SearchScreenState()
-    data object InternetConnectionError : SearchScreenState()
+    data object InternetConnError : SearchScreenState()
     data object ServerError : SearchScreenState()
-    data object EmptyList : SearchScreenState()
-    data object ErrInPagging : SearchScreenState()
-    data object LoadNextPage : SearchScreenState()
-    data class ShowVacancies(val vacancies: List<Vacancy>) : SearchScreenState()
+    data object NoVacancies : SearchScreenState()
+    data object PagingErrInternet : SearchScreenState()
+    data object PagingSuccess : SearchScreenState()
+    data object PagingErrServer : SearchScreenState()
+    data class ShowVacancies(val page: Page) : SearchScreenState()
 }
