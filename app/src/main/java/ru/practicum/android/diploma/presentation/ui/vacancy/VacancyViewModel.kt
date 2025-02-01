@@ -9,7 +9,6 @@ import ru.practicum.android.diploma.domain.api.VacancyInteractor
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
 
-
 enum class VacancyStatus {
     LOADING,
     SUCCESS,
@@ -17,14 +16,12 @@ enum class VacancyStatus {
     SERVER_ERROR
 }
 
-
 class VacancyViewModel(
     private val vacancyInteractor: VacancyInteractor
 ) : ViewModel() {
 
     private val _vacancy = MutableLiveData<Resource<Vacancy>>()
     val vacancy: LiveData<Resource<Vacancy>> = _vacancy
-
 
     private val _isFavorite = MutableLiveData<Boolean>()
     val isFavorite: LiveData<Boolean> = _isFavorite
@@ -35,16 +32,12 @@ class VacancyViewModel(
     fun prepareVacancy(vacancyId: String) {
         _status.value = VacancyStatus.LOADING
         viewModelScope.launch {
-            try {
-                val result = vacancyInteractor.getVacancy(vacancyId)
-                _vacancy.value = result
-                _status.value = if (result is Resource.Success) {
-                    VacancyStatus.SUCCESS
-                } else {
-                    VacancyStatus.SERVER_ERROR
-                }
-            } catch (e: Exception) {
-                _status.value = VacancyStatus.SERVER_ERROR
+            val result = vacancyInteractor.getVacancy(vacancyId)
+            _vacancy.value = result
+            _status.value = if (result is Resource.Success) {
+                VacancyStatus.SUCCESS
+            } else {
+                VacancyStatus.SERVER_ERROR
             }
         }
     }

@@ -17,9 +17,11 @@ val viewModelModule = module {
         VacancyViewModel(get())
     }
 
+
     viewModel {
         FavouritesViewModel(get())
     }
 
     single { FilterParameters() }
+
 }
