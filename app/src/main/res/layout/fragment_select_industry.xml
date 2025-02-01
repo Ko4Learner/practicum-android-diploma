@@ -76,7 +76,7 @@
         android:id="@+id/chooseIndustry"
         style="@style/accept_blue_button"
         android:layout_marginBottom="@dimen/margin_24"
-        android:text="@string/choose"
+        android:text="@string/choice"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

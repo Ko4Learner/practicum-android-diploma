@@ -66,6 +66,7 @@
     <string name="item_vacancy_salary_from_to" translatable="false">от %1$s до %2$s %3$s</string>
     <string name="mock_item_industry" translatable="false">Алкогольные напитки (утилизация)</string>
     <string name="could_not_get_list" translatable="false">Не удалось получить\nсписок</string>
-    <string name="choose">Выбрать</string>
+    <string name="enter_region">Введите регион</string>
+    <string name="choice">Выбрать</string>
 
 </resources>
