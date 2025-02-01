@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.di
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
@@ -27,6 +29,11 @@ val dataModule = module {
 
     single<NetworkClient> {
         RetrofitNetworkClient(get(), androidContext())
+    }
+
+    single<SharedPreferences> {
+        androidContext()
+            .getSharedPreferences("local_storage", Context.MODE_PRIVATE)
     }
 
     factory { Gson() }
