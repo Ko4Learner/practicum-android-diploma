@@ -10,8 +10,17 @@ import ru.practicum.android.diploma.presentation.ui.search.SearchViewModel
 
 val viewModelModule = module {
 
-    viewModelOf(::SearchViewModel)
-    viewModelOf(::VacancyViewModel)
-    viewModelOf(::FavouritesViewModel)
+    viewModel {
+        SearchViewModel(get())
+    }
+
+    viewModel {
+        VacancyViewModel(get())
+    }
+
+    viewModel {
+        FavouritesViewModel(get())
+    }
+
     single { FilterParameters() }
 }
