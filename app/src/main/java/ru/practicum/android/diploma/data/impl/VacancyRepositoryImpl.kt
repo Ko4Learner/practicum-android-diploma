@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.data.impl
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
@@ -24,6 +23,7 @@ class VacancyRepositoryImpl(
     private val gson: Gson
 ) : VacancyRepository {
     companion object {
+        private const val BAD_REQUEST = "BAD_REQUEST"
         private const val SUCCESSFUL_REQUEST = 200
     }
 
@@ -40,7 +40,7 @@ class VacancyRepositoryImpl(
                 )
             )
         } else {
-            Resource.Error("${response.resultCode}")
+            Resource.Error(BAD_REQUEST)
         }
         emit(result)
     }
@@ -48,16 +48,15 @@ class VacancyRepositoryImpl(
     override suspend fun getVacancy(vacancyId: String): Resource<Vacancy> {
         val result: Resource<Vacancy>
         val vacancy = appDatabase.getFavoriteVacancyDao().getVacancyById(vacancyId)
-        if (vacancy != null) {
-            result = Resource.Success(vacancy.toDomain())
+        result = if (vacancy != null) {
+            Resource.Success(vacancy.toDomain())
         } else {
             val request = Request.VacancyRequest(vacancyId)
             val response = networkClient.doRequest(request) as VacancyResponse
-            Log.d("TestSearch", "VacancyResponse: ${response.vacancy}")
-            result = if (response.resultCode == SUCCESSFUL_REQUEST) {
+            if (response.resultCode == SUCCESSFUL_REQUEST) {
                 Resource.Success(convertFromVacancyDto(response.vacancy))
             } else {
-                Resource.Error("${response.resultCode}")
+                Resource.Error(BAD_REQUEST)
             }
         }
         return result
@@ -83,8 +82,9 @@ class VacancyRepositoryImpl(
             vacancy.employment?.name,
             vacancy.experience?.name,
             vacancy.description,
+            vacancy.keySkills?.map { it.name },
             vacancy.alternateUrl,
-            vacancy.isFavorite
+            false
         )
     }
 
@@ -97,6 +97,7 @@ class VacancyRepositoryImpl(
             salary = this.salary?.let { gson.fromJson(it, object : TypeToken<Salary>() {}.type) },
             employerName = this.employerName,
             description = this.description,
+            keySkills = gson.fromJson(this.keySkills, object : TypeToken<List<String>>() {}.type),
             alternateUrl = this.alternateUrl,
             employment = this.employment,
             experience = this.experience,

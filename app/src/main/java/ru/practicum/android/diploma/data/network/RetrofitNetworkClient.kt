@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.data.dto.AreasResponse
+import ru.practicum.android.diploma.data.dto.IndustriesResponse
 import ru.practicum.android.diploma.data.dto.Request
 import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.VacancyResponse
@@ -20,33 +21,21 @@ class RetrofitNetworkClient(private val vacancyService: VacancyApi) : NetworkCli
         return withContext(Dispatchers.IO) {
             try {
                 val resp = when (dto) {
-                    is Request.VacanciesRequest -> {
-                        vacancyService.searchVacancy(dto.options)
-                    }
+                    is Request.VacanciesRequest -> vacancyService.searchVacancy(dto.options)
 
-                    is Request.VacancyRequest -> {
-                        VacancyResponse(vacancyService.getVacancy(dto.id))
-                    }
+                    is Request.VacancyRequest -> VacancyResponse(vacancyService.getVacancy(dto.id))
 
-                    is Request.CountriesRequest -> {
-                        AreasResponse(vacancyService.getCountries())
-                    }
+                    is Request.CountriesRequest -> AreasResponse(vacancyService.getCountries())
 
-                    is Request.AreasRequest -> {
-                        vacancyService.getAreasById(dto.id)
-                    }
+                    is Request.AreasByIdRequest -> vacancyService.getAreasById(dto.id)
 
-                    is Request.ProfessionalRolesRequest -> {
-                        vacancyService.getProfessionalRoles()
-                    }
+                    is Request.AreasRequest -> AreasResponse(vacancyService.getAreas())
+
+                    is Request.Industries -> IndustriesResponse(vacancyService.getIndustries())
                 }
-
                 resp.apply { resultCode = SuccessfulRequest }
             } catch (e: HttpException) {
-                Log.d(
-                    RETROFIT_LOG,
-                    "${e.message}"
-                )
+                Log.d(RETROFIT_LOG, "${e.message}")
                 Response().apply { resultCode = BadRequest }
             }
         }
