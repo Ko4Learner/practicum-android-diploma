@@ -7,14 +7,14 @@
     tools:context=".presentation.ui.filter.workplace.SelectWorkplaceFragment">
 
     <androidx.appcompat.widget.Toolbar
+        style="@style/Toolbar"
         android:id="@+id/ToolbarWorkspace"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:paddingVertical="8dp"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/toolbar_back"
-        app:title="@string/choice_of_work"
-        app:titleTextAppearance="@style/TextMedium_22_500" />
+        app:title="@string/choice_of_work" />
 
 
     <ImageView
@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ToolbarWorkspace" />
 
     <TextView
-        android:id="@+id/helperCountry"
+        android:id="@+id/helperTextViewArea"
         style="@style/filter_textView_helper"
         android:layout_marginTop="@dimen/_28dp"
         android:text="@string/country"
@@ -37,13 +37,13 @@
         app:layout_constraintTop_toBottomOf="@id/ToolbarWorkspace" />
 
     <TextView
-        android:id="@+id/textCountry"
+        android:id="@+id/textViewArea"
         style="@style/filter_textView"
         android:hint="@string/country"
-        app:layout_constraintEnd_toStartOf="iconCountry"
+        app:layout_constraintEnd_toStartOf="@id/iconCountry"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/helperCountry"
-        android:layout_marginTop="@dimen/margin_32" />
+        app:layout_constraintTop_toBottomOf="@id/helperTextViewArea"
+        app:layout_goneMarginTop="@dimen/margin_32" />
 
     <ImageView
         android:id="@+id/iconRegion"
@@ -56,7 +56,7 @@
         app:layout_constraintTop_toBottomOf="@+id/iconCountry" />
 
     <TextView
-        android:id="@+id/helperRegion"
+        android:id="@+id/helperTextViewIndustry"
         style="@style/filter_textView_helper"
         android:layout_marginTop="@dimen/margin_32"
         android:text="@string/region"
@@ -65,13 +65,13 @@
         app:layout_constraintTop_toBottomOf="@id/iconCountry" />
 
     <TextView
-        android:id="@+id/textRegion"
+        android:id="@+id/textViewIndustry"
         style="@style/filter_textView"
         android:hint="@string/region"
-        app:layout_constraintEnd_toStartOf="iconCountry"
+        app:layout_constraintEnd_toStartOf="@id/iconCountry"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/helperRegion"
-        android:layout_marginTop="@dimen/_40dp" />
+        app:layout_constraintTop_toBottomOf="@id/helperTextViewIndustry"
+        app:layout_goneMarginTop="@dimen/_40dp" />
 
     <Button
         style="@style/TextMedium_16_500"

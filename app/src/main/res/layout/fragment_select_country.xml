@@ -9,13 +9,13 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/ToolbarCountry"
+        style="@style/Toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="8dp"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/toolbar_back"
-        app:title="@string/choice_of_country"
-        app:titleTextAppearance="@style/TextMedium_22_500" />
+        app:title="@string/choice_of_country" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RegionRecyclerView"
