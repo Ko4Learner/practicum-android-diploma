@@ -17,7 +17,7 @@ val dataModule = module {
             .build()
     }
 
-    single<VacancyApi> {
+    single {
         Retrofit.Builder()
             .baseUrl("https://api.hh.ru")
             .addConverterFactory(GsonConverterFactory.create())
