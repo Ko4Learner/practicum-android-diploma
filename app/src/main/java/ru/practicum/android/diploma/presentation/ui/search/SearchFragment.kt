@@ -21,7 +21,6 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.adapter.VacancyAdapter
 import ru.practicum.android.diploma.util.debounce
 
-
 class SearchFragment : Fragment() {
 
     private val viewModel by viewModel<SearchViewModel>()
@@ -84,17 +83,19 @@ class SearchFragment : Fragment() {
             renderScreen(state)
         }
         viewModel.getScreenToast().observe(viewLifecycleOwner) { state ->
-            when(state){
-                is SingleState.PagingErrServer->{
-                    Toast.makeText(requireContext(),"Произошла ошибка",Toast.LENGTH_LONG).show()
-                    binding.progressBar.isVisible=false
+            when (state) {
+                is SingleState.PagingErrServer -> {
+                    Toast.makeText(requireContext(), "Произошла ошибка", Toast.LENGTH_LONG).show()
+                    binding.progressBar.isVisible = false
                     viewModel.resetScreenToast()
                 }
+
                 is SingleState.PagingErrInternet -> {
-                    Toast.makeText(requireContext(),"Проверьте подключение к интернету",Toast.LENGTH_LONG).show()
-                    binding.progressBar.isVisible=false
+                    Toast.makeText(requireContext(), "Проверьте подключение к интернету", Toast.LENGTH_LONG).show()
+                    binding.progressBar.isVisible = false
                     viewModel.resetScreenToast()
                 }
+
                 is SingleState.NoActions -> {}
             }
         }
@@ -122,38 +123,46 @@ class SearchFragment : Fragment() {
             is SearchScreenState.ServerError -> {
                 renderServerError()
             }
+
             is SearchScreenState.Loading -> {
                 renderLoading()
             }
+
             is SearchScreenState.ShowVacancies -> {
                 showVacansies(state.page.vacancies, state.page.found)
             }
+
             is SearchScreenState.PagingSuccess -> {
                 renderPagingSuccess()
             }
+
             is SearchScreenState.StartScreen -> {
                 renderStartScreen()
             }
+
             is SearchScreenState.EmptyScreen -> {
                 renderEmptyScreen()
             }
+
             is SearchScreenState.NoVacancies -> {
                 renderNoVacancies()
             }
+
             is SearchScreenState.InternetConnError -> {
                 renderInternetConnError()
             }
+
             SearchScreenState.NoActions -> {}
         }
     }
 
     private fun renderInternetConnError() {
-            clearScreen()
-            binding.apply {
-                errorMessageAndImg.setText(R.string.do_not_have_internet)
-                errorMessageAndImg.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.no_internet, 0, 0)
-                errorMessageAndImg.isVisible=true
-            }
+        clearScreen()
+        binding.apply {
+            errorMessageAndImg.setText(R.string.do_not_have_internet)
+            errorMessageAndImg.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.no_internet, 0, 0)
+            errorMessageAndImg.isVisible = true
+        }
     }
 
     private fun renderNoVacancies() {
@@ -161,7 +170,7 @@ class SearchFragment : Fragment() {
         binding.apply {
             errorMessageAndImg.setText(R.string.could_not_get_job_list)
             errorMessageAndImg.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.no_vacancies, 0, 0)
-            errorMessageAndImg.isVisible=true
+            errorMessageAndImg.isVisible = true
         }
     }
 
@@ -171,13 +180,13 @@ class SearchFragment : Fragment() {
 
     private fun renderStartScreen() {
         clearScreen()
-        binding.startScreenImg.isVisible=true
+        binding.startScreenImg.isVisible = true
     }
 
     private fun renderPagingSuccess() {
         clearScreen()
-        binding.recyclerView.isVisible=true
-        binding.progressBar.isVisible=true
+        binding.recyclerView.isVisible = true
+        binding.progressBar.isVisible = true
     }
 
     private fun showVacansies(vacancies: List<Vacancy>, numberVac: Int) {
@@ -217,9 +226,15 @@ class SearchFragment : Fragment() {
         val i = num % 100
         val i1 = i % 10
         val i2 = i / 10
-        val out = if ((i1 == 1) && (i2 != 1)) "Найдена $num вакансия"
-        else if ((i1 > 1) && (i1 < 5) && (i2 != 1)) "Найдено $num вакансии"
-        else "Найдено $num вакансий"
+        val out = if (i1 == 1 && i2 != 1) {
+            "Найдена $num вакансия"
+        }
+        else if (i1 in 2..4 && i2 != 1) {
+            "Найдено $num вакансии"
+        }
+        else {
+            "Найдено $num вакансий"
+        }
         return out
     }
 
