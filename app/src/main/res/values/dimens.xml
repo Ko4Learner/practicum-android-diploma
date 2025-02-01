@@ -29,4 +29,6 @@
     <dimen name="_0dp">0dp</dimen>
     <dimen name="placeholder_height">233dp</dimen>
     <dimen name="placeholder_width">328dp</dimen>
+    <dimen name="_40dp">40dp</dimen>
+    <dimen name="_28dp">28dp</dimen>
 </resources>
