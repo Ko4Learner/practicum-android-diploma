@@ -28,4 +28,6 @@
     <dimen name="_0dp">0dp</dimen>
     <dimen name="placeholder_height">233dp</dimen>
     <dimen name="placeholder_width">328dp</dimen>
+    <dimen name="_6dp">6dp</dimen>
+    <dimen name="_62dp">62dp</dimen>
 </resources>

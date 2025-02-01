@@ -96,7 +96,7 @@
         <item name="android:textAppearance">@style/TextMedium_22_500</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_marginHorizontal">16dp</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:visibility">gone</item>
     </style>
@@ -120,6 +120,14 @@
         <item name="android:layout_marginTop">@dimen/_8dp</item>
         <item name="android:paddingTop">@dimen/_38dp</item>
         <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="accept_blue_button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/_62dp</item>
+        <item name="android:layout_marginHorizontal">@dimen/margin_16</item>
+        <item name="android:textAppearance">@style/TextMedium_16_500</item>
+        <item name="cornerRadius">@dimen/radius_12</item>
     </style>
 
 </resources>
