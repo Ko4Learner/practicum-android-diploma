@@ -99,7 +99,7 @@ class SearchViewModel(
     }
 
     fun onLastItemReached() {
-        if (page < (pages - 1) && !isPadding) {
+        if (page < pages - 1 && !isPadding) {
             isPadding = true
             screenState.value = SearchScreenState.PagingSuccess
             startSearch(lastSearch, ++page)

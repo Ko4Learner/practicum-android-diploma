@@ -224,15 +224,13 @@ class SearchFragment : Fragment() {
 
 
     private fun getMessage(num: Int): String {
-        val constant100 = 100
-        val constant10 = 10
-        val constant1 = 1
-        val i = num % constant100
-        val i1 = i % constant10
-        val i2 = i / constant10
-        val out = if (i1 == constant1 && i2 != constant1) {
+        val i = num % NUMBER_100
+        val i1 = i % NUMBER_10
+        val i2 = i / NUMBER_10
+        val range= listOf(NUMBER_2, NUMBER_3, NUMBER_4)
+        val out = if (i1 == NUMBER_1 && i2 != NUMBER_1) {
             "Найдена $num вакансия"
-        } else if (i1 in 2..4 && i2 != constant1) {
+        } else if (i1 in range && i2 != NUMBER_1) {
             "Найдено $num вакансии"
         } else {
             "Найдено $num вакансий"
@@ -244,5 +242,12 @@ class SearchFragment : Fragment() {
         const val KEY_VACANCY = "KEY_VACANCY"
         const val CLICK_DEBOUNCE_DELAY = 1000L
         fun newInstance() = SearchFragment()
+        private const val NUMBER_1 = 1
+        private const val NUMBER_2 = 2
+        private const val NUMBER_3 = 3
+        private const val NUMBER_4 = 4
+        private const val NUMBER_10 = 10
+        private const val NUMBER_100 = 100
+
     }
 }
