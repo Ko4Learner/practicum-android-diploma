@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.data.impl
 
+import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
@@ -16,36 +17,45 @@ import ru.practicum.android.diploma.domain.models.Page
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Salary
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.util.isConnected
 
 class VacancyRepositoryImpl(
     private val networkClient: NetworkClient,
     private val appDatabase: AppDatabase,
+    private val context: Context,
     private val gson: Gson
 ) : VacancyRepository {
     companion object {
+        private const val NO_CONNECTION = "NO_CONNECTION"
         private const val BAD_REQUEST = "BAD_REQUEST"
         private const val SUCCESSFUL_REQUEST = 200
     }
 
     override fun getVacancies(options: Map<String, String>): Flow<Resource<Page>> = flow {
-        val request = Request.VacanciesRequest(options)
-        val response = networkClient.doRequest(request) as VacanciesResponse
-        val result = if (response.resultCode == SUCCESSFUL_REQUEST) {
-            Resource.Success(
-                Page(
-                    response.items.map { convertFromVacancyDto(it) },
-                    response.page,
-                    response.pages,
-                    response.found
+        if (isConnected(context)) {
+            val request = Request.VacanciesRequest(options)
+            val response = networkClient.doRequest(request) as VacanciesResponse
+            val result = if (response.resultCode == SUCCESSFUL_REQUEST) {
+                Resource.Success(
+                    Page(
+                        response.items.map { convertFromVacancyDto(it) },
+                        response.page,
+                        response.pages,
+                        response.found
+                    )
                 )
-            )
+            } else {
+                Resource.Error(BAD_REQUEST)
+            }
+            emit(result)
         } else {
-            Resource.Error(BAD_REQUEST)
+            emit(Resource.Error(NO_CONNECTION))
         }
-        emit(result)
+
     }
 
     override suspend fun getVacancy(vacancyId: String): Resource<Vacancy> {
+        if (!isConnected(context)) return Resource.Error(NO_CONNECTION)
         val result: Resource<Vacancy>
         val vacancy = appDatabase.getFavoriteVacancyDao().getVacancyById(vacancyId)
         result = if (vacancy != null) {
