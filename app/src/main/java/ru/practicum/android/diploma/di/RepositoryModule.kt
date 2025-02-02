@@ -26,6 +26,6 @@ val repositoryModule = module {
     }
 
     single<FilterRequestRepository> {
-        FilterRequestRepositoryImpl(get())
+        FilterRequestRepositoryImpl(get(), androidContext())
     }
 }

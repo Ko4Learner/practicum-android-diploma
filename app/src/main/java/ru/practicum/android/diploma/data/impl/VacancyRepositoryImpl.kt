@@ -34,16 +34,19 @@ class VacancyRepositoryImpl(
     override fun getVacancies(options: Map<String, String>): Flow<Resource<Page>> = flow {
         if (isConnected(context)) {
             val request = Request.VacanciesRequest(options)
-            val response = networkClient.doRequest(request) as VacanciesResponse
+            val response = networkClient.doRequest(request)
             val result = if (response.resultCode == SUCCESSFUL_REQUEST) {
-                Resource.Success(
-                    Page(
-                        response.items.map { convertFromVacancyDto(it) },
-                        response.page,
-                        response.pages,
-                        response.found
+                with(response as VacanciesResponse) {
+                    val success = Resource.Success(
+                        Page(
+                            this.items.map { convertFromVacancyDto(it) },
+                            this.page,
+                            this.pages,
+                            this.found
+                        )
                     )
-                )
+                    success
+                }
             } else {
                 Resource.Error(BAD_REQUEST)
             }
@@ -55,16 +58,18 @@ class VacancyRepositoryImpl(
     }
 
     override suspend fun getVacancy(vacancyId: String): Resource<Vacancy> {
-        if (!isConnected(context)) return Resource.Error(NO_CONNECTION)
         val result: Resource<Vacancy>
         val vacancy = appDatabase.getFavoriteVacancyDao().getVacancyById(vacancyId)
         result = if (vacancy != null) {
             Resource.Success(vacancy.toDomain())
         } else {
+            if (!isConnected(context)) return Resource.Error(NO_CONNECTION)
             val request = Request.VacancyRequest(vacancyId)
-            val response = networkClient.doRequest(request) as VacancyResponse
+            val response = networkClient.doRequest(request)
             if (response.resultCode == SUCCESSFUL_REQUEST) {
-                Resource.Success(convertFromVacancyDto(response.vacancy))
+                with(response as VacancyResponse) {
+                    Resource.Success(convertFromVacancyDto(this.vacancy))
+                }
             } else {
                 Resource.Error(BAD_REQUEST)
             }
