@@ -39,6 +39,7 @@ open class FavouritesRepositoryImpl(
             salary = this.salary?.let { gson.fromJson(it, object : TypeToken<Salary>() {}.type) },
             employerName = this.employerName,
             description = this.description,
+            keySkills = gson.fromJson(this.keySkills, object : TypeToken<List<String>>() {}.type),
             alternateUrl = this.alternateUrl,
             employment = this.employment,
             experience = this.experience,
@@ -55,6 +56,7 @@ open class FavouritesRepositoryImpl(
             salary = this.salary?.let { gson.toJson(it) },
             employerName = this.employerName,
             description = this.description,
+            keySkills = gson.toJson(this.keySkills),
             alternateUrl = this.alternateUrl,
             employment = this.employment,
             experience = this.experience
