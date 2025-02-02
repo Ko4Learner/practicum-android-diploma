@@ -22,7 +22,7 @@ class RetrofitNetworkClient(
         private const val BAD_REQUEST = 400
         private const val CONNECT_ERR = 300
     }
-    
+
     override suspend fun doRequest(dto: Request): Response {
         if (!isConnected(context)) {
             return Response().apply { resultCode = CONNECT_ERR }
