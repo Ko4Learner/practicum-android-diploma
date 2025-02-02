@@ -76,7 +76,9 @@ class SearchFragment : Fragment() {
                 LinearLayoutManager.VERTICAL,
                 false
             )
-            iconFilter.setOnClickListener { findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment) }
+            iconFilter.setOnClickListener {
+                findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
+            }
         }
         viewModel.getScreenState().observe(viewLifecycleOwner) { state ->
             renderScreen(state)
