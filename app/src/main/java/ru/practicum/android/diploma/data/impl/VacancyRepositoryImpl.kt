@@ -32,29 +32,21 @@ class VacancyRepositoryImpl(
     }
 
     override fun getVacancies(options: Map<String, String>): Flow<Resource<Page>> = flow {
-        if (isConnected(context)) {
-            val request = Request.VacanciesRequest(options)
-            val response = networkClient.doRequest(request)
-            val result = if (response.resultCode == SUCCESSFUL_REQUEST) {
-                with(response as VacanciesResponse) {
-                    val success = Resource.Success(
-                        Page(
-                            this.items.map { convertFromVacancyDto(it) },
-                            this.page,
-                            this.pages,
-                            this.found
-                        )
-                    )
-                    success
-                }
-            } else {
-                Resource.Error(BAD_REQUEST)
-            }
-            emit(result)
+        val request = Request.VacanciesRequest(options)
+        val response = networkClient.doRequest(request) as VacanciesResponse
+        val result = if (response.resultCode == SUCCESSFUL_REQUEST) {
+            Resource.Success(
+                Page(
+                    response.items.map { convertFromVacancyDto(it) },
+                    response.page,
+                    response.pages,
+                    response.found
+                )
+            )
         } else {
-            emit(Resource.Error(NO_CONNECTION))
+            Resource.Error("${response.resultCode}")
         }
-
+        emit(result)
     }
 
     override suspend fun getVacancy(vacancyId: String): Resource<Vacancy> {

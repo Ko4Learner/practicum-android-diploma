@@ -21,33 +21,34 @@ class SearchViewModel(
     private var lastSearch: String = ""
     private var page = 0
     private var pages = 0
-    var isNextPageLoading = false
     private val vacancies = ArrayList<Vacancy>()
     private var isPadding = false
-
     private val screenState = MutableLiveData<SearchScreenState>(SearchScreenState.StartScreen)
     fun getScreenState(): LiveData<SearchScreenState> = screenState
+
+    private val screenToast = MutableLiveData<SingleState>(SingleState.NoActions)
+    fun getScreenToast(): LiveData<SingleState> = screenToast
+    fun resetScreenToast() {
+        screenToast.value = SingleState.NoActions
+    }
 
     val searchDebounce = debounce<String>(
         SEARCH_DEBOUNCE_DELAY,
         viewModelScope,
         true
     ) { request ->
-
-        if (request != lastSearch) {
+        if (request != lastSearch && request.isNotEmpty()) {
             lastSearch = request
             screenState.value = SearchScreenState.Loading
             startSearch(request, 0)
-
         }
-
     }
 
     private fun startSearch(request: String, page: Int) {
         val options: HashMap<String, String> = HashMap()
-        options["text"] = request
+        options[OPTIONS_TEXT] = request
         if (page != 0) {
-            options["page"] = page.toString()
+            options[OPTIONS_PAGE] = page.toString()
         }
 
         viewModelScope.launch {
@@ -60,12 +61,18 @@ class SearchViewModel(
     }
 
     private fun resultHandler(result: Resource<Page>) {
-        val state = when (result) {
+        when (result) {
             is Resource.Error -> {
-                if (!isPadding) {
-                    SearchScreenState.ServerError
+                if (!isPadding && result.message == BAD_REQUEST) {
+                    screenState.postValue(SearchScreenState.ServerError)
+                } else if (!isPadding && result.message == CONNECT_ERR) {
+                    screenState.postValue(SearchScreenState.InternetConnError)
+                } else if (isPadding && result.message == BAD_REQUEST) {
+                    screenToast.postValue(SingleState.PagingErrServer)
+                    SearchScreenState.NoActions
                 } else {
-                    SearchScreenState.ErrInPagging
+                    screenToast.postValue(SingleState.PagingErrInternet)
+                    SearchScreenState.NoActions
                 }
             }
 
@@ -77,13 +84,12 @@ class SearchViewModel(
                 pages = result.data.pages
                 vacancies.addAll(result.data.vacancies)
                 if (vacancies.isEmpty()) {
-                    SearchScreenState.EmptyList
+                    screenState.postValue(SearchScreenState.NoVacancies)
+                } else {
+                    screenState.postValue(SearchScreenState.ShowVacancies(result.data.copy(vacancies = vacancies)))
                 }
-                SearchScreenState.ShowVacancies(vacancies)
             }
-
         }
-        screenState.postValue(state)
         isPadding = false
 
     }
@@ -91,13 +97,17 @@ class SearchViewModel(
     fun onLastItemReached() {
         if (page < pages - 1 && !isPadding) {
             isPadding = true
-            screenState.value = SearchScreenState.LoadNextPage
+            screenState.value = SearchScreenState.PagingSuccess
             startSearch(lastSearch, ++page)
         }
         Log.d("mytag", "---onLastItemReached:--- ")
     }
 
     companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 5000L
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val BAD_REQUEST = "400"
+        private const val CONNECT_ERR = "300"
+        private const val OPTIONS_TEXT = "text"
+        private const val OPTIONS_PAGE = "page"
     }
 }

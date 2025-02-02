@@ -3,10 +3,10 @@ package ru.practicum.android.diploma.presentation.ui.search
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -66,9 +66,7 @@ class SearchFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if (!s.isNullOrEmpty()) {
-                    viewModel.searchDebounce(s.toString())
-                }
+                viewModel.searchDebounce(s.toString())
             }
         })
         binding.apply {
@@ -78,9 +76,29 @@ class SearchFragment : Fragment() {
                 LinearLayoutManager.VERTICAL,
                 false
             )
+            iconFilter.setOnClickListener {
+                findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
+            }
         }
         viewModel.getScreenState().observe(viewLifecycleOwner) { state ->
             renderScreen(state)
+        }
+        viewModel.getScreenToast().observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is SingleState.PagingErrServer -> {
+                    Toast.makeText(requireContext(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show()
+                    binding.progressBar.isVisible = false
+                    viewModel.resetScreenToast()
+                }
+
+                is SingleState.PagingErrInternet -> {
+                    Toast.makeText(requireContext(), getString(R.string.check_connect), Toast.LENGTH_LONG).show()
+                    binding.progressBar.isVisible = false
+                    viewModel.resetScreenToast()
+                }
+
+                is SingleState.NoActions -> {}
+            }
         }
         binding.iconSearchField.setOnClickListener { binding.searchField.setText(getString(R.string.empty_string)) }
 
@@ -104,45 +122,132 @@ class SearchFragment : Fragment() {
         clearScreen()
         when (state) {
             is SearchScreenState.ServerError -> {
-                binding.searchCentralPlaceholderImg.isVisible = false
-                Log.d("mytag", "SearchScreenState.ServerError $state")
+                renderServerError()
             }
 
             is SearchScreenState.Loading -> {
-                binding.searchCentralPlaceholderImg.isVisible = false
-                binding.progressBar.isVisible = true
+                renderLoading()
             }
 
             is SearchScreenState.ShowVacancies -> {
-                binding.searchCentralPlaceholderImg.isVisible = false
-                binding.recyclerView.isVisible = true
-                searchAdapter.updateItems(state.vacancies)
+                showVacansies(state.page.vacancies, state.page.found)
             }
 
-            is SearchScreenState.LoadNextPage -> {
-                binding.searchCentralPlaceholderImg.isVisible = false
-                binding.progressBar.isVisible = true
+            is SearchScreenState.PagingSuccess -> {
+                renderPagingSuccess()
             }
 
-            else -> {
-                Log.d("mytag", "branch else state:$state")
+            is SearchScreenState.StartScreen -> {
+                renderStartScreen()
             }
+
+            is SearchScreenState.EmptyScreen -> {
+                renderEmptyScreen()
+            }
+
+            is SearchScreenState.NoVacancies -> {
+                renderNoVacancies()
+            }
+
+            is SearchScreenState.InternetConnError -> {
+                renderInternetConnError()
+            }
+
+            SearchScreenState.NoActions -> {}
+        }
+    }
+
+    private fun renderInternetConnError() {
+        clearScreen()
+        binding.apply {
+            errorMessageAndImg.setText(R.string.do_not_have_internet)
+            errorMessageAndImg.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.no_internet, 0, 0)
+            errorMessageAndImg.isVisible = true
+        }
+    }
+
+    private fun renderNoVacancies() {
+        clearScreen()
+        binding.apply {
+            errorMessageAndImg.setText(R.string.could_not_get_job_list)
+            errorMessageAndImg.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.no_vacancies, 0, 0)
+            errorMessageAndImg.isVisible = true
+        }
+    }
+
+    private fun renderEmptyScreen() {
+        clearScreen()
+    }
+
+    private fun renderStartScreen() {
+        clearScreen()
+        binding.startScreenImg.isVisible = true
+    }
+
+    private fun renderPagingSuccess() {
+        clearScreen()
+        binding.recyclerView.isVisible = true
+        binding.progressBar.isVisible = true
+    }
+
+    private fun showVacansies(vacancies: List<Vacancy>, numberVac: Int) {
+        clearScreen()
+        val stringResult = getMessage(numberVac)
+        binding.searchResult.text = stringResult
+        binding.searchResult.isVisible = true
+        binding.recyclerView.isVisible = true
+        searchAdapter.updateItems(vacancies)
+    }
+
+    private fun renderLoading() {
+        clearScreen()
+        binding.progressBar.isVisible = true
+    }
+
+    private fun renderServerError() {
+        clearScreen()
+        binding.apply {
+            errorMessageAndImg.setText(R.string.server_error)
+            errorMessageAndImg.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.server_err, 0, 0)
+            errorMessageAndImg.isVisible = true
         }
     }
 
     private fun clearScreen() {
         binding.apply {
             progressBar.isVisible = false
-            searchCentralPlaceholderImg.isVisible = true
-            errorMessagePlaceholder.isVisible = false
+            startScreenImg.isVisible = false
+            errorMessageAndImg.isVisible = false
             searchResult.isVisible = false
             recyclerView.isVisible = false
         }
+    }
+
+    private fun getMessage(num: Int): String {
+        val i = num % NUMBER_100
+        val i1 = i % NUMBER_10
+        val i2 = i / NUMBER_10
+        val range = listOf(NUMBER_2, NUMBER_3, NUMBER_4)
+        val out = if (i1 == NUMBER_1 && i2 != NUMBER_1) {
+            "Найдена $num вакансия"
+        } else if (i1 in range && i2 != NUMBER_1) {
+            "Найдено $num вакансии"
+        } else {
+            "Найдено $num вакансий"
+        }
+        return out
     }
 
     companion object {
         const val KEY_VACANCY = "KEY_VACANCY"
         const val CLICK_DEBOUNCE_DELAY = 1000L
         fun newInstance() = SearchFragment()
+        private const val NUMBER_1 = 1
+        private const val NUMBER_2 = 2
+        private const val NUMBER_3 = 3
+        private const val NUMBER_4 = 4
+        private const val NUMBER_10 = 10
+        private const val NUMBER_100 = 100
+
     }
 }
