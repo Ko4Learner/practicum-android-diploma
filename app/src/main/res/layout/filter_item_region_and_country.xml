@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/item"
+        android:id="@+id/textCard"
         style="@style/TextRegular_16_400"
         android:layout_width="match_parent"
         android:layout_height="60dp"
