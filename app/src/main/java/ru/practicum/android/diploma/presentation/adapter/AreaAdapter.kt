@@ -10,7 +10,6 @@ import ru.practicum.android.diploma.domain.models.Area
 
 class AreaAdapter : RecyclerView.Adapter<AreaAdapter.AreaViewHolder>() {
 
-
     private var areaList = mutableListOf<Area>()
 
     fun updateItems(item: List<Area>) {
