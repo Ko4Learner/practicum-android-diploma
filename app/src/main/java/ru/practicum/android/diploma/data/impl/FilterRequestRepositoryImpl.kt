@@ -104,7 +104,6 @@ class FilterRequestRepositoryImpl(
         )
     }
 
-
     companion object {
         private const val NO_CONNECTION = "NO_CONNECTION"
         private const val BAD_REQUEST = "BAD_REQUEST"

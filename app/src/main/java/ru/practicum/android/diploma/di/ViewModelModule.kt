@@ -24,8 +24,8 @@ val viewModelModule = module {
 
     single { FilterParameters() }
 
-    viewModel{
-        SelectCountryViewModel(get(),get())
+    viewModel {
+        SelectCountryViewModel(get(), get())
     }
 }
 
