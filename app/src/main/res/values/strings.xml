@@ -68,5 +68,7 @@
     <string name="could_not_get_list" translatable="false">Не удалось получить\nсписок</string>
     <string name="enter_region">Введите регион</string>
     <string name="choice">Выбрать</string>
+    <string name="error_occurred">Произошла ошибка</string>
+    <string name="check_connect">Проверьте подключение к интернету</string>
 
 </resources>

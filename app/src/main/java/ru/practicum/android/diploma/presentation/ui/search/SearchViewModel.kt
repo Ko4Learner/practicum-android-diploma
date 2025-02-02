@@ -23,7 +23,6 @@ class SearchViewModel(
     private var pages = 0
     private val vacancies = ArrayList<Vacancy>()
     private var isPadding = false
-
     private val screenState = MutableLiveData<SearchScreenState>(SearchScreenState.StartScreen)
     fun getScreenState(): LiveData<SearchScreenState> = screenState
 
@@ -38,21 +37,18 @@ class SearchViewModel(
         viewModelScope,
         true
     ) { request ->
-
-        if (request != lastSearch) {
+        if (request != lastSearch && request.isNotEmpty()) {
             lastSearch = request
             screenState.value = SearchScreenState.Loading
             startSearch(request, 0)
-
         }
-
     }
 
     private fun startSearch(request: String, page: Int) {
         val options: HashMap<String, String> = HashMap()
-        options["text"] = request
+        options[OPTIONS_TEXT] = request
         if (page != 0) {
-            options["page"] = page.toString()
+            options[OPTIONS_PAGE] = page.toString()
         }
 
         viewModelScope.launch {
@@ -111,5 +107,7 @@ class SearchViewModel(
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val BAD_REQUEST = "400"
         private const val CONNECT_ERR = "300"
+        private const val OPTIONS_TEXT = "text"
+        private const val OPTIONS_PAGE = "page"
     }
 }

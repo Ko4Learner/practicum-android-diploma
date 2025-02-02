@@ -66,9 +66,7 @@ class SearchFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if (!s.isNullOrEmpty()) {
-                    viewModel.searchDebounce(s.toString())
-                }
+                viewModel.searchDebounce(s.toString())
             }
         })
         binding.apply {
@@ -78,6 +76,7 @@ class SearchFragment : Fragment() {
                 LinearLayoutManager.VERTICAL,
                 false
             )
+            iconFilter.setOnClickListener { findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment) }
         }
         viewModel.getScreenState().observe(viewLifecycleOwner) { state ->
             renderScreen(state)
@@ -85,13 +84,13 @@ class SearchFragment : Fragment() {
         viewModel.getScreenToast().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SingleState.PagingErrServer -> {
-                    Toast.makeText(requireContext(), "Произошла ошибка", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show()
                     binding.progressBar.isVisible = false
                     viewModel.resetScreenToast()
                 }
 
                 is SingleState.PagingErrInternet -> {
-                    Toast.makeText(requireContext(), "Проверьте подключение к интернету", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), getString(R.string.check_connect), Toast.LENGTH_LONG).show()
                     binding.progressBar.isVisible = false
                     viewModel.resetScreenToast()
                 }
