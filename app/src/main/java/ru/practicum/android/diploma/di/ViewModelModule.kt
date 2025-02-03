@@ -9,15 +9,10 @@ import ru.practicum.android.diploma.presentation.ui.vacancy.VacancyViewModel
 import ru.practicum.android.diploma.presentation.ui.filter.settings.FilterSettingsViewModel
 
 val viewModelModule = module {
-
     viewModelOf(::FilterSettingsViewModel)
-
     viewModelOf(::SearchViewModel)
-
     viewModelOf(::VacancyViewModel)
-
     viewModelOf(::FavouritesViewModel)
-
     single { FilterParameters() }
 }
 
