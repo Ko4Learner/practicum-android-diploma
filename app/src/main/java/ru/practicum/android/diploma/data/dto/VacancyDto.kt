@@ -12,8 +12,9 @@ data class VacancyDto(
     val employment: EmploymentDto?,
     val experience: ExperienceDto?,
     val description: String?,
-    @SerializedName("key_skills")
-    val keySkills: List<KeySkillsDto>?,
     @SerializedName("alternate_url")
-    val alternateUrl: String
+    val alternateUrl: String,
+    val isFavorite: Boolean,
+    @SerializedName("key_skills")
+    val keySkills: List<KeySkillsDto>?
 )

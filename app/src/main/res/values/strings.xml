@@ -26,14 +26,14 @@
 
     <string name="enter_the_amount" translatable="false">Введите сумму</string>
     <string name="enter_industry" translatable="false">Введите отрасль</string>
-
+    
     <string name="the_expected_salary" translatable="false">Ожидаемая зарплата</string>
 
     <string name="industry" translatable="false">Отрасль</string>
     <string name="workplace" translatable="false">Место работы</string>
     <string name="country" translatable="false">Страна</string>
     <string name="region" translatable="false">Регион</string>
-
+    
     <string name="apply" translatable="false">Применить</string>
     <string name="reset" translatable="false">Сбросить</string>
 
@@ -70,5 +70,10 @@
     <string name="choice">Выбрать</string>
     <string name="error_occurred">Произошла ошибка</string>
     <string name="check_connect">Проверьте подключение к интернету</string>
+    <string name="required_experience">Требуемый опыт</string>
+    <string name="description_vacancy">Описание вакансии</string>
+    <string name="key_skills">Ключевые навыки</string>
+    <string name="share_vacancy">Поделиться вакансией</string>
+    <string name="employment">%1$s занятость</string>
 
 </resources>
