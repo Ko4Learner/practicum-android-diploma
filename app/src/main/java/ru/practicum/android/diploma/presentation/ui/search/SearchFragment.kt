@@ -62,11 +62,12 @@ class SearchFragment : Fragment() {
                     binding.iconSearchField.setImageResource(R.drawable.del_search_string_icon)
                 } else {
                     binding.iconSearchField.setImageResource(R.drawable.search_icon_search_fragment)
+                    renderStartScreen()
                 }
             }
 
             override fun afterTextChanged(s: Editable?) {
-                viewModel.searchDebounce(s.toString())
+                viewModel.searchDebounce(s?.toString()?:"")
             }
         })
         binding.apply {
@@ -116,6 +117,16 @@ class SearchFragment : Fragment() {
                 }
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding=null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkFilterParameters()
     }
 
     private fun renderScreen(state: SearchScreenState) {
@@ -241,7 +252,6 @@ class SearchFragment : Fragment() {
     companion object {
         const val KEY_VACANCY = "KEY_VACANCY"
         const val CLICK_DEBOUNCE_DELAY = 1000L
-        fun newInstance() = SearchFragment()
         private const val NUMBER_1 = 1
         private const val NUMBER_2 = 2
         private const val NUMBER_3 = 3

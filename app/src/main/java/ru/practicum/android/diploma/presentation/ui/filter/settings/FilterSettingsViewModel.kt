@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.presentation.ui.filter.settings
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,15 +13,82 @@ class FilterSettingsViewModel(
     private val filterInteractor: FilterParametersInteractor
 ) : ViewModel() {
 
-    private val _filter = MutableLiveData<FilterParameters>()
-    fun observeFilter(): LiveData<FilterParameters> = _filter
+    private lateinit var sharedPreferencesFilter: FilterParameters
+
+    private val filterLiveData = MutableLiveData<FilterParameters>()
+    fun observeFilter(): LiveData<FilterParameters> = filterLiveData
+
+    private val applyButtonLiveData = MutableLiveData<Boolean>()
+    fun observeApplyButtonLiveData(): LiveData<Boolean> = applyButtonLiveData
+
+    private val resetButtonLiveData = MutableLiveData<Boolean>()
+    fun observeResetButtonLiveData(): LiveData<Boolean> = resetButtonLiveData
 
     init {
         viewModelScope.launch {
             filterInteractor.getParameters()
-                .collect { param -> setupFilterParameters(param) }
-            Log.d("myTag", filterParameters.toString())
-        }.invokeOnCompletion { _filter.postValue(filterParameters) }
+                .collect { param ->
+                    setupFilterParameters(param)
+                }
+        }
+    }
+
+    fun changeExpectedSalary(salary: String) {
+        filterParameters.expectedSalary = if (salary.isNotEmpty()) {
+            salary.toInt()
+        } else null
+        equalsFilters()
+    }
+
+    fun changeOnlyWithSalary() {
+        filterParameters.onlyWithSalary = !filterParameters.onlyWithSalary!!
+        equalsFilters()
+    }
+
+    fun equalsFilters() {
+        applyButtonLiveData.postValue(filterParameters != sharedPreferencesFilter)
+    }
+
+    fun saveFilterParameters() {
+        viewModelScope.launch { filterInteractor.saveParameters(filterParameters) }
+        sharedPreferencesFilter = filterParameters.copy()
+        equalsFilters()
+    }
+
+    fun resetFilterParameters() {
+        viewModelScope.launch {
+            filterInteractor.saveParameters(
+                FilterParameters(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                )
+            )
+        }
+        filterParameters.apply {
+            country = null
+            area = null
+            industry = null
+            expectedSalary = null
+            onlyWithSalary = false
+        }
+        sharedPreferencesFilter = filterParameters.copy()
+        postValueFilter(filterParameters)
+        equalsFilters()
+    }
+
+    fun checkEmptyFilter() {
+        resetButtonLiveData.postValue(
+            filterParameters != FilterParameters(
+                null,
+                null,
+                null,
+                null,
+                false
+            )
+        )
     }
 
     private fun setupFilterParameters(parameters: FilterParameters) {
@@ -31,7 +97,14 @@ class FilterSettingsViewModel(
             area = parameters.area
             industry = parameters.industry
             expectedSalary = parameters.expectedSalary
-            onlyWithSalary = parameters.onlyWithSalary
+            onlyWithSalary = parameters.onlyWithSalary ?: false
         }
+        sharedPreferencesFilter = filterParameters.copy()
+        postValueFilter(filterParameters)
+    }
+
+    private fun postValueFilter(parameters: FilterParameters) {
+        filterLiveData.postValue(parameters)
+        checkEmptyFilter()
     }
 }

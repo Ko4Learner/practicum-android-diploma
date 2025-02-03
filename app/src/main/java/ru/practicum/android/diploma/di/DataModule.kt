@@ -16,6 +16,7 @@ import ru.practicum.android.diploma.data.network.VacancyApi
 val dataModule = module {
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .fallbackToDestructiveMigration()
             .build()
     }
 

@@ -11,10 +11,6 @@ class FilterParametersRepositoryImpl(
     private val sharedPrefs: SharedPreferences,
     private val gson: Gson
 ) : FilterParametersRepository {
-    companion object {
-        private const val DEF_PARAMETERS = ""
-        private const val KEY_FOR_PARAMETERS = "KEY_FOR_PARAMETERS"
-    }
 
     override suspend fun saveParameters(parameters: FilterParameters) {
         sharedPrefs.edit()
@@ -24,9 +20,13 @@ class FilterParametersRepositoryImpl(
 
     override fun getParameters(): Flow<FilterParameters> = flow {
         val parameters = gson.fromJson(
-            sharedPrefs.getString(KEY_FOR_PARAMETERS, DEF_PARAMETERS),
+            sharedPrefs.getString(KEY_FOR_PARAMETERS, gson.toJson(FilterParameters())),
             FilterParameters::class.java
         )
         emit(parameters)
+    }
+
+    companion object {
+        private const val KEY_FOR_PARAMETERS = "KEY_FOR_PARAMETERS"
     }
 }

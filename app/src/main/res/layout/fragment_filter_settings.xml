@@ -39,7 +39,7 @@
     <TextView
         android:id="@+id/textViewArea"
         style="@style/filter_textView"
-        android:hint="@string/country"
+        android:hint="@string/workplace"
         app:layout_constraintEnd_toStartOf="@id/iconArea"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/helperTextViewArea"
