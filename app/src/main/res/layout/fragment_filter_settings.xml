@@ -78,6 +78,7 @@
         style="@style/mainSearchField"
         android:layout_marginVertical="@dimen/_44dp"
         android:hint="@string/enter_the_amount"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iconIndustry" />
