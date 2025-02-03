@@ -13,6 +13,7 @@ val viewModelModule = module {
     viewModelOf(::VacancyViewModel)
     viewModelOf(::FavouritesViewModel)
     single { FilterParameters() }
+
     viewModelOf(::FilterSettingsViewModel)
 }
 
