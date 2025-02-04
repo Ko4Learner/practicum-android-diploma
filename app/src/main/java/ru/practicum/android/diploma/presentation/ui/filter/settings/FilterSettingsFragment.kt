@@ -91,12 +91,18 @@ class FilterSettingsFragment : Fragment() {
                 findNavController().popBackStack()
             }
             iconArea.setOnClickListener {
-                if (textViewArea.text.isNotEmpty()) {textViewArea.text = EMPTY_TEXT}
-                else {findNavController().navigate(R.id.action_filterSettingsFragment_to_selectWorkplaceFragment)}
+                if (textViewArea.text.isNotEmpty()) {
+                    textViewArea.text = EMPTY_TEXT
+                } else {
+                    findNavController().navigate(R.id.action_filterSettingsFragment_to_selectWorkplaceFragment)
+                }
             }
             iconIndustry.setOnClickListener {
-                if (textViewIndustry.text.isNotEmpty()) {textViewIndustry.text = EMPTY_TEXT}
-                else {findNavController().navigate(R.id.action_filterSettingsFragment_to_selectIndustryFragment)}
+                if (textViewIndustry.text.isNotEmpty()) {
+                    textViewIndustry.text = EMPTY_TEXT
+                } else {
+                    findNavController().navigate(R.id.action_filterSettingsFragment_to_selectIndustryFragment)
+                }
             }
             textViewArea.setOnClickListener {
                 findNavController().navigate(R.id.action_filterSettingsFragment_to_selectWorkplaceFragment)
@@ -109,7 +115,6 @@ class FilterSettingsFragment : Fragment() {
             }
             checkboxSalary.setOnClickListener {
                 viewModel.changeOnlyWithSalary()
-                viewModel.checkEmptyFilter()
             }
             enterFilter.setOnClickListener {
                 viewModel.saveFilterParameters()

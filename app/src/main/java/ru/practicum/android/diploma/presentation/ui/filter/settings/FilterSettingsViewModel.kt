@@ -36,13 +36,16 @@ class FilterSettingsViewModel(
     fun changeExpectedSalary(salary: String) {
         filterParameters.expectedSalary = if (salary.isNotEmpty()) {
             salary.toInt()
-        } else {null}
+        } else {
+            null
+        }
         equalsFilters()
     }
 
     fun changeOnlyWithSalary() {
         filterParameters.onlyWithSalary = !filterParameters.onlyWithSalary!!
         equalsFilters()
+        checkEmptyFilter()
     }
 
     fun equalsFilters() {
