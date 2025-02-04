@@ -18,12 +18,6 @@ class FilterRequestRepositoryImpl(
     private val networkClient: NetworkClient,
     private val context: Context
 ) : FilterRequestRepository {
-    companion object {
-        private const val NO_CONNECTION = "NO_CONNECTION"
-        private const val BAD_REQUEST = "BAD_REQUEST"
-        private const val SUCCESSFUL_REQUEST = 200
-    }
-
     override fun getCountries(): Flow<Resource<List<Area>>> = flow {
         if (isConnected(context)) {
             val response = networkClient.doRequest(Request.CountriesRequest)
@@ -108,5 +102,11 @@ class FilterRequestRepositoryImpl(
             this.parentId,
             this.name
         )
+    }
+
+    companion object {
+        private const val NO_CONNECTION = "NO_CONNECTION"
+        private const val BAD_REQUEST = "BAD_REQUEST"
+        private const val SUCCESSFUL_REQUEST = 200
     }
 }

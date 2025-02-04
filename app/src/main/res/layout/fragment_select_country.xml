@@ -17,6 +17,49 @@
         app:navigationIcon="@drawable/toolbar_back"
         app:title="@string/choice_of_country" />
 
+
+    <LinearLayout
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ToolbarCountry">
+
+        <ProgressBar
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/blue" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imagePlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_16dp"
+        android:src="@drawable/no_vacancies"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ToolbarCountry"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <TextView
+        android:id="@+id/textPlaceholder"
+        style="@style/TextMedium_22_500"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/no_such_region"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagePlaceholder" />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/CountryRecyclerView"
         android:layout_width="match_parent"
