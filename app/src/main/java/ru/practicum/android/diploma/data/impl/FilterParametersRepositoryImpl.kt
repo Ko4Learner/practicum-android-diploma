@@ -13,6 +13,9 @@ class FilterParametersRepositoryImpl(
 ) : FilterParametersRepository {
 
     override suspend fun saveParameters(parameters: FilterParameters) {
+        if (parameters.onlyWithSalary == false) {
+            parameters.onlyWithSalary = null
+        }
         sharedPrefs.edit()
             .putString(KEY_FOR_PARAMETERS, gson.toJson(parameters))
             .apply()

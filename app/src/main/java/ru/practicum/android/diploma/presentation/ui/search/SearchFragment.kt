@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -85,16 +86,39 @@ class SearchFragment : Fragment() {
             clearScreen()
             renderScreen(state)
         }
+        viewModel.getTypeFilterIcon().observe(viewLifecycleOwner) {
+            binding.iconFilter.setImageDrawable(
+                if (it) {
+                    AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.filter_icon_search_fragment
+                    )
+                } else {
+                    AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.no_empty_filter_icon
+                    )
+                }
+            )
+        }
         viewModel.getScreenToast().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SingleState.PagingErrServer -> {
-                    Toast.makeText(requireContext(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.error_occurred),
+                        Toast.LENGTH_LONG
+                    ).show()
                     binding.progressBar.isVisible = false
                     viewModel.resetScreenToast()
                 }
 
                 is SingleState.PagingErrInternet -> {
-                    Toast.makeText(requireContext(), getString(R.string.check_connect), Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.check_connect),
+                        Toast.LENGTH_LONG
+                    ).show()
                     binding.progressBar.isVisible = false
                     viewModel.resetScreenToast()
                 }
@@ -141,7 +165,7 @@ class SearchFragment : Fragment() {
             }
 
             is SearchScreenState.ShowVacancies -> {
-                showVacansies(state.page.vacancies, state.page.found)
+                showVacancies(state.page.vacancies, state.page.found)
             }
 
             is SearchScreenState.PagingSuccess -> {
@@ -172,7 +196,12 @@ class SearchFragment : Fragment() {
         clearScreen()
         binding.apply {
             errorMessageAndImg.setText(R.string.do_not_have_internet)
-            errorMessageAndImg.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.no_internet, 0, 0)
+            errorMessageAndImg.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                0,
+                R.drawable.no_internet,
+                0,
+                0
+            )
             errorMessageAndImg.isVisible = true
         }
     }
@@ -181,7 +210,12 @@ class SearchFragment : Fragment() {
         clearScreen()
         binding.apply {
             errorMessageAndImg.setText(R.string.could_not_get_job_list)
-            errorMessageAndImg.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.no_vacancies, 0, 0)
+            errorMessageAndImg.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                0,
+                R.drawable.no_vacancies,
+                0,
+                0
+            )
             errorMessageAndImg.isVisible = true
         }
     }
@@ -201,7 +235,7 @@ class SearchFragment : Fragment() {
         binding.progressBar.isVisible = true
     }
 
-    private fun showVacansies(vacancies: List<Vacancy>, numberVac: Int) {
+    private fun showVacancies(vacancies: List<Vacancy>, numberVac: Int) {
         clearScreen()
         val stringResult = getMessage(numberVac)
         binding.searchResult.text = stringResult
@@ -219,7 +253,12 @@ class SearchFragment : Fragment() {
         clearScreen()
         binding.apply {
             errorMessageAndImg.setText(R.string.server_error)
-            errorMessageAndImg.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.server_err, 0, 0)
+            errorMessageAndImg.setCompoundDrawablesWithIntrinsicBounds(
+                0,
+                R.drawable.server_err,
+                0,
+                0
+            )
             errorMessageAndImg.isVisible = true
         }
     }

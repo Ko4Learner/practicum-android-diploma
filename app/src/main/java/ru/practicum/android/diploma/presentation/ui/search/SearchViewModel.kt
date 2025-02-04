@@ -32,6 +32,10 @@ class SearchViewModel(
 
     private val screenToast = MutableLiveData<SingleState>(SingleState.NoActions)
     fun getScreenToast(): LiveData<SingleState> = screenToast
+
+    private val emptyFilterButton = MutableLiveData<Boolean>()
+    fun getTypeFilterIcon(): LiveData<Boolean> = emptyFilterButton
+
     fun resetScreenToast() {
         screenToast.value = SingleState.NoActions
     }
@@ -72,9 +76,20 @@ class SearchViewModel(
             filterInteractor.getParameters().collect { param ->
                 if (filterParameters != param) {
                     filterParameters = param
-                    startSearch(lastSearch, 0)
+                    if (lastSearch != "") {
+                        startSearch(lastSearch, 0)
+                    }
                 }
             }
+            emptyFilterButton.postValue(
+                filterParameters == FilterParameters(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                )
+            )
         }
     }
 
