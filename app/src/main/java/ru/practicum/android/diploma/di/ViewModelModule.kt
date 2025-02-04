@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.presentation.ui.search.SearchViewModel
 import ru.practicum.android.diploma.presentation.ui.vacancy.VacancyViewModel
 
 val viewModelModule = module {
+
     viewModelOf(::FilterSettingsViewModel)
     viewModelOf(::SearchViewModel)
     viewModelOf(::VacancyViewModel)
