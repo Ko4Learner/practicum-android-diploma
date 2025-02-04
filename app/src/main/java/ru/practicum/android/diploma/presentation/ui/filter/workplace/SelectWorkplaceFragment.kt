@@ -38,8 +38,8 @@ class SelectWorkplaceFragment : Fragment() {
     private fun setupUI() {
         val filterParameters = viewModel.getFilterParameters()
 
-        if (!filterParameters.country.isNullOrEmpty()) {
-            binding.textViewCountry.text = filterParameters.country
+        if (filterParameters.country!=null) {
+            binding.textViewCountry.text = filterParameters.country!!.name
             binding.iconCountry.setImageResource(R.drawable.del_search_string_icon_24dp)
         } else {
             binding.iconCountry.setImageResource(R.drawable.arrow_forward)
@@ -48,8 +48,8 @@ class SelectWorkplaceFragment : Fragment() {
             }
         }
 
-        if (!filterParameters.area.isNullOrEmpty()) {
-            binding.textViewRegion.text = filterParameters.area
+        if (filterParameters.area!=null) {
+            binding.textViewRegion.text = filterParameters.area!!.name
             binding.iconRegion.setImageResource(R.drawable.del_search_string_icon_24dp)
         } else {
             binding.iconRegion.setImageResource(R.drawable.arrow_forward)
@@ -109,9 +109,5 @@ class SelectWorkplaceFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        fun newInstance() = SelectWorkplaceFragment()
     }
 }
