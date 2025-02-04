@@ -80,8 +80,8 @@ class SelectIndustryViewModel(
         }
     }
 
-    fun chooseIndustry(industryId: String?) {
-        filterParameters.industry = industryId
+    fun chooseIndustry(industry: Industry?) {
+        filterParameters.industry = Industry(industry!!.id, industry.name)
     }
 
     companion object {

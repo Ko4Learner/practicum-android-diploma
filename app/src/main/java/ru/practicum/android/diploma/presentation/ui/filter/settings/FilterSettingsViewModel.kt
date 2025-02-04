@@ -45,6 +45,7 @@ class FilterSettingsViewModel(
 
     fun clearArea(){
         filterParameters.area = null
+        filterParameters.country = null
         equalsFilters()
         checkEmptyFilter()
     }

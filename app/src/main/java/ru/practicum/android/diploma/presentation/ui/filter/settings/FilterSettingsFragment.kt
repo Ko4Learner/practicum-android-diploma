@@ -71,10 +71,12 @@ class FilterSettingsFragment : Fragment() {
                 iconArea.setImageResource(R.drawable.del_search_string_icon_24dp)
                 helperTextViewArea.isVisible = true
             }
-            textViewIndustry.text = parameters.industry
-            if (!textViewIndustry.text.isNullOrEmpty()) {
+            if (parameters.industry != null) {
+                textViewIndustry.text = parameters.industry!!.name
                 iconIndustry.setImageResource(R.drawable.del_search_string_icon_24dp)
                 helperTextViewIndustry.isVisible = true
+            }else {
+                textViewIndustry.text = EMPTY_TEXT
             }
             if (parameters.expectedSalary != null) {
                 salaryField.setText(parameters.expectedSalary.toString())
@@ -88,14 +90,18 @@ class FilterSettingsFragment : Fragment() {
     }
 
     private fun renderArea(parameters: FilterParameters): String {
-        return if (parameters.country.isNullOrEmpty() && !parameters.area.isNullOrEmpty()) {
-            parameters.area!!
-        } else if (!parameters.country.isNullOrEmpty() && parameters.area.isNullOrEmpty()) {
-            parameters.country!!
-        } else if (parameters.country.isNullOrEmpty() && parameters.area.isNullOrEmpty()) {
+        return if (parameters.country == null && parameters.area != null) {
+            parameters.area!!.name
+        } else if (parameters.country != null && parameters.area == null) {
+            parameters.country!!.name
+        } else if (parameters.country == null) {
             EMPTY_TEXT
         } else {
-            resources.getString(R.string.item_filter_area, parameters.country, parameters.area)
+            resources.getString(
+                R.string.item_filter_area,
+                parameters.country!!.name,
+                parameters.area!!.name
+            )
         }
     }
 
@@ -122,6 +128,20 @@ class FilterSettingsFragment : Fragment() {
             }
             resetFilter.setOnClickListener {
                 viewModel.resetFilterParameters()
+                helperTextViewArea.visibility = View.GONE
+                iconArea.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.arrow_forward
+                    )
+                )
+                helperTextViewIndustry.visibility = View.GONE
+                iconIndustry.setImageDrawable(
+                    AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.arrow_forward
+                    )
+                )
             }
         }
     }

@@ -17,7 +17,7 @@ class AreaAdapter : RecyclerView.Adapter<AreaAdapter.AreaViewHolder>() {
         notifyDataSetChanged()
     }
 
-    var onItemClick: ((String) -> Unit)? = null
+    var onItemClick: ((Area) -> Unit)? = null
 
     inner class AreaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val text: TextView = itemView.findViewById(R.id.textCard)
@@ -35,7 +35,7 @@ class AreaAdapter : RecyclerView.Adapter<AreaAdapter.AreaViewHolder>() {
     override fun onBindViewHolder(holder: AreaViewHolder, position: Int) {
         holder.bind(areaList[position])
         holder.itemView.setOnClickListener {
-            onItemClick?.let { it1 -> it1(areaList[position].name) }
+            onItemClick?.let { it1 -> it1(areaList[position]) }
         }
     }
 

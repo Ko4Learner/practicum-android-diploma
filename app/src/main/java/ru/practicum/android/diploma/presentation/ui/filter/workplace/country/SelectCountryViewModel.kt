@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.api.FilterRequestInteractor
 import ru.practicum.android.diploma.domain.models.Area
+import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.FilterParameters
 import ru.practicum.android.diploma.domain.models.Resource
 
@@ -40,7 +41,7 @@ class SelectCountryViewModel(
         }
     }
 
-    fun saveCountry(country: String) {
-        filterParameters.country = country
+    fun saveCountry(country: Area) {
+        filterParameters.country = Country(country.id!!, country.name)
     }
 }

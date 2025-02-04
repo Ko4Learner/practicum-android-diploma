@@ -55,7 +55,7 @@ class IndustryAdapter(
         industries = emptyList()
     }
 
-    fun getSelectedItemId(): String? {
-        return if (selectedItem != null) industries[selectedItem!!].id else null
+    fun getSelectedItemId(): Industry? {
+        return if (selectedItem != null) industries[selectedItem!!] else null
     }
 }

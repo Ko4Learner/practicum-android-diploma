@@ -1,9 +1,9 @@
 package ru.practicum.android.diploma.domain.models
 
 data class FilterParameters(
-    var country: String? = null,
-    var area: String? = null,
-    var industry: String? = null,
+    var country: Country? = null,
+    var area: Area? = null,
+    var industry: Industry? = null,
     var expectedSalary: Int? = null,
     var onlyWithSalary: Boolean? = null
 ) {
@@ -21,13 +21,13 @@ data class FilterParameters(
         result[TEXT_QUERY] = text
         result[PAGE_QUERY] = page.toString()
         if (area != null) {
-            result[AREA_QUERY] = area!!
+            result[AREA_QUERY] = area!!.id!!
         } else {
-            if (country != null) result[AREA_QUERY] = country!!
+            if (country != null) result[AREA_QUERY] = country!!.id
         }
         if (expectedSalary != null && expectedSalary != 0) result[SALARY_QUERY] = expectedSalary.toString()
         if (onlyWithSalary != null) result[ONLY_WITH_SALARY_QUERY] = onlyWithSalary.toString()
-        if (industry != null) result[INDUSTRY] = industry!!
+        if (industry != null) result[INDUSTRY] = industry!!.id
         return result
     }
 }

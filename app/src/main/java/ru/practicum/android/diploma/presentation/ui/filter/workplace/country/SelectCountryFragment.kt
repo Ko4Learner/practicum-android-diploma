@@ -22,7 +22,7 @@ class SelectCountryFragment : Fragment() {
     private var _binding: FragmentSelectCountryBinding? = null
     private val binding get() = _binding!!
     private var adapter = AreaAdapter()
-    private var onClickCountry: (String) -> Unit = {}
+    private var onClickCountry: (Area) -> Unit = {}
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +36,7 @@ class SelectCountryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        onClickCountry = debounce<String>(
+        onClickCountry = debounce<Area>(
             CLICK_DEBOUNCE_DELAY,
             viewLifecycleOwner.lifecycleScope,
             false
@@ -105,9 +105,5 @@ class SelectCountryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        fun newInstance() = SelectCountryFragment()
     }
 }
