@@ -76,4 +76,6 @@
     <string name="share_vacancy">Поделиться вакансией</string>
     <string name="employment">%1$s занятость</string>
 
+    <string name="item_filter_area" translatable="false">%1$s, %2$s</string>
+
 </resources>

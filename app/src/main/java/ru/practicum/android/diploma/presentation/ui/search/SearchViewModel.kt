@@ -8,14 +8,17 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.practicum.android.diploma.domain.api.FilterParametersInteractor
 import ru.practicum.android.diploma.domain.api.VacancyInteractor
+import ru.practicum.android.diploma.domain.models.FilterParameters
 import ru.practicum.android.diploma.domain.models.Page
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.debounce
 
 class SearchViewModel(
-    private val vacancyInteractor: VacancyInteractor
+    private val vacancyInteractor: VacancyInteractor,
+    private val filterInteractor: FilterParametersInteractor
 ) : ViewModel() {
 
     private var lastSearch: String = ""
@@ -24,12 +27,25 @@ class SearchViewModel(
     private val vacancies = ArrayList<Vacancy>()
     private var isPadding = false
     private val screenState = MutableLiveData<SearchScreenState>(SearchScreenState.StartScreen)
+    private var filterParameters: FilterParameters? = null
     fun getScreenState(): LiveData<SearchScreenState> = screenState
 
     private val screenToast = MutableLiveData<SingleState>(SingleState.NoActions)
     fun getScreenToast(): LiveData<SingleState> = screenToast
+
+    private val emptyFilterButton = MutableLiveData<Boolean>()
+    fun getTypeFilterIcon(): LiveData<Boolean> = emptyFilterButton
+
     fun resetScreenToast() {
         screenToast.value = SingleState.NoActions
+    }
+
+    init {
+        viewModelScope.launch {
+            filterInteractor.getParameters().collect { param ->
+                filterParameters = param
+            }
+        }
     }
 
     val searchDebounce = debounce<String>(
@@ -37,26 +53,43 @@ class SearchViewModel(
         viewModelScope,
         true
     ) { request ->
+
         if (request != lastSearch && request.isNotEmpty()) {
-            lastSearch = request
             screenState.value = SearchScreenState.Loading
             startSearch(request, 0)
         }
+        lastSearch = request
     }
 
     private fun startSearch(request: String, page: Int) {
-        val options: HashMap<String, String> = HashMap()
-        options[OPTIONS_TEXT] = request
-        if (page != 0) {
-            options[OPTIONS_PAGE] = page.toString()
-        }
-
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 vacancyInteractor
-                    .getVacancies(options)
+                    .getVacancies(filterParameters!!.makeRequest(request, page))
                     .collect { result -> resultHandler(result) }
             }
+        }
+    }
+
+    fun checkFilterParameters() {
+        viewModelScope.launch {
+            filterInteractor.getParameters().collect { param ->
+                if (filterParameters != param) {
+                    filterParameters = param
+                    if (lastSearch != "") {
+                        startSearch(lastSearch, 0)
+                    }
+                }
+            }
+            emptyFilterButton.postValue(
+                filterParameters == FilterParameters(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                )
+            )
         }
     }
 
@@ -107,7 +140,5 @@ class SearchViewModel(
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val BAD_REQUEST = "400"
         private const val CONNECT_ERR = "300"
-        private const val OPTIONS_TEXT = "text"
-        private const val OPTIONS_PAGE = "page"
     }
 }
