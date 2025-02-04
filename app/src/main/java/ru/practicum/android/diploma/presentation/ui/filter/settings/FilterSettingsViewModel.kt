@@ -43,14 +43,14 @@ class FilterSettingsViewModel(
         checkEmptyFilter()
     }
 
-    fun clearArea(){
+    fun clearArea() {
         filterParameters.area = null
         filterParameters.country = null
         equalsFilters()
         checkEmptyFilter()
     }
 
-    fun clearIndustry(){
+    fun clearIndustry() {
         filterParameters.industry = null
         equalsFilters()
         checkEmptyFilter()
