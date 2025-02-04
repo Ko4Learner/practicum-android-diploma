@@ -296,6 +296,5 @@ class SearchFragment : Fragment() {
         private const val NUMBER_4 = 4
         private const val NUMBER_10 = 10
         private const val NUMBER_100 = 100
-
     }
 }
