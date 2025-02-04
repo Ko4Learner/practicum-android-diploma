@@ -23,12 +23,20 @@ class FilterParameters(
         if (area != null) {
             result[AREA_QUERY] = area!!.id!!
         } else {
-            if (country != null) result[AREA_QUERY] = country!!.id
+            if (country != null) {
+                result[AREA_QUERY] = country!!.id
+            }
         }
-        if (expectedSalary != null && expectedSalary != 0) result[SALARY_QUERY] =
-            expectedSalary.toString()
-        if (onlyWithSalary != null) result[ONLY_WITH_SALARY_QUERY] = onlyWithSalary.toString()
-        if (industry != null) result[INDUSTRY] = industry!!.id
+        if (expectedSalary != null && expectedSalary != 0) {
+            result[SALARY_QUERY] =
+                expectedSalary.toString()
+        }
+        if (onlyWithSalary != null) {
+            result[ONLY_WITH_SALARY_QUERY] = onlyWithSalary.toString()
+        }
+        if (industry != null) {
+            result[INDUSTRY] = industry!!.id
+        }
         return result
     }
 
