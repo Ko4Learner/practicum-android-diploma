@@ -75,7 +75,7 @@ class FilterSettingsFragment : Fragment() {
                 textViewIndustry.text = parameters.industry!!.name
                 iconIndustry.setImageResource(R.drawable.del_search_string_icon_24dp)
                 helperTextViewIndustry.isVisible = true
-            }else {
+            } else {
                 textViewIndustry.text = EMPTY_TEXT
             }
             if (parameters.expectedSalary != null) {
@@ -107,6 +107,7 @@ class FilterSettingsFragment : Fragment() {
 
     private fun setupListeners() {
         setupIconAreaAndIndustryListeners()
+        setupButtonListeners()
         binding.apply {
             toolbar.setOnClickListener {
                 findNavController().popBackStack()
@@ -123,6 +124,11 @@ class FilterSettingsFragment : Fragment() {
             checkboxSalary.setOnClickListener {
                 viewModel.changeOnlyWithSalary()
             }
+        }
+    }
+
+    private fun setupButtonListeners() {
+        binding.apply {
             enterFilter.setOnClickListener {
                 viewModel.saveFilterParameters()
             }

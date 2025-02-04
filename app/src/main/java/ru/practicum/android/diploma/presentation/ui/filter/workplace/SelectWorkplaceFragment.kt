@@ -38,7 +38,7 @@ class SelectWorkplaceFragment : Fragment() {
     private fun setupUI() {
         val filterParameters = viewModel.getFilterParameters()
 
-        if (filterParameters.country!=null) {
+        if (filterParameters.country != null) {
             binding.textViewCountry.text = filterParameters.country!!.name
             binding.iconCountry.setImageResource(R.drawable.del_search_string_icon_24dp)
         } else {
@@ -48,7 +48,7 @@ class SelectWorkplaceFragment : Fragment() {
             }
         }
 
-        if (filterParameters.area!=null) {
+        if (filterParameters.area != null) {
             binding.textViewRegion.text = filterParameters.area!!.name
             binding.iconRegion.setImageResource(R.drawable.del_search_string_icon_24dp)
         } else {

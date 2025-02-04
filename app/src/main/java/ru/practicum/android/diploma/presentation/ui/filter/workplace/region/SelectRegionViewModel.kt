@@ -48,7 +48,8 @@ class SelectRegionViewModel(
                         when (result) {
                             is Resource.Success -> {
                                 val listCountries = result.data
-                                countryId = listCountries.find { it.name == filterParameters.country!!.name }?.id
+                                countryId =
+                                    listCountries.find { it.name == filterParameters.country!!.name }?.id
                             }
 
                             else -> {
@@ -85,7 +86,7 @@ class SelectRegionViewModel(
     }
 
     fun saveRegion(region: Area) {
-        filterParameters.area = Area(region.id,region.parentId, region.name)
+        filterParameters.area = Area(region.id, region.parentId, region.name)
     }
 
     companion object {
