@@ -13,7 +13,7 @@ class FilterSettingsViewModel(
     private val filterInteractor: FilterParametersInteractor
 ) : ViewModel() {
 
-    private lateinit var sharedPreferencesFilter: FilterParameters
+    private var sharedPreferencesFilter: FilterParameters? = null
 
     private val filterLiveData = MutableLiveData<FilterParameters>()
     fun observeFilter(): LiveData<FilterParameters> = filterLiveData
@@ -36,7 +36,7 @@ class FilterSettingsViewModel(
     fun changeExpectedSalary(salary: String) {
         filterParameters.expectedSalary = if (salary.isNotEmpty()) {
             salary.toInt()
-        } else null
+        } else {null}
         equalsFilters()
     }
 

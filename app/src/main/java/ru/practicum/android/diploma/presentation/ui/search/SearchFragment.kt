@@ -67,7 +67,7 @@ class SearchFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                viewModel.searchDebounce(s?.toString()?:"")
+                viewModel.searchDebounce(s?.toString() ?: "")
             }
         })
         binding.apply {
@@ -82,6 +82,7 @@ class SearchFragment : Fragment() {
             }
         }
         viewModel.getScreenState().observe(viewLifecycleOwner) { state ->
+            clearScreen()
             renderScreen(state)
         }
         viewModel.getScreenToast().observe(viewLifecycleOwner) { state ->
@@ -121,7 +122,7 @@ class SearchFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding=null
+        _binding = null
     }
 
     override fun onResume() {
@@ -130,7 +131,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun renderScreen(state: SearchScreenState) {
-        clearScreen()
         when (state) {
             is SearchScreenState.ServerError -> {
                 renderServerError()

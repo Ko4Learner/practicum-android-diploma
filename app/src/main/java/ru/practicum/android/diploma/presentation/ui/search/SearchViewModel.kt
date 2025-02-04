@@ -27,7 +27,7 @@ class SearchViewModel(
     private val vacancies = ArrayList<Vacancy>()
     private var isPadding = false
     private val screenState = MutableLiveData<SearchScreenState>(SearchScreenState.StartScreen)
-    private lateinit var filterParameters: FilterParameters
+    private var filterParameters: FilterParameters? = null
     fun getScreenState(): LiveData<SearchScreenState> = screenState
 
     private val screenToast = MutableLiveData<SingleState>(SingleState.NoActions)
@@ -61,7 +61,7 @@ class SearchViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 vacancyInteractor
-                    .getVacancies(filterParameters.makeRequest(request, page))
+                    .getVacancies(filterParameters!!.makeRequest(request, page))
                     .collect { result -> resultHandler(result) }
             }
         }

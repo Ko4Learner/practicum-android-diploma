@@ -20,7 +20,9 @@ class FilterSettingsFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFilterSettingsBinding.inflate(inflater, container, false)
         return binding.root
@@ -62,7 +64,9 @@ class FilterSettingsFragment : Fragment() {
             }
             if (parameters.expectedSalary != null) {
                 salaryField.setText(parameters.expectedSalary.toString())
-            } else salaryField.setText(EMPTY_TEXT)
+            } else {
+                salaryField.setText(EMPTY_TEXT)
+            }
             if (parameters.onlyWithSalary != null) {
                 checkboxSalary.isChecked = parameters.onlyWithSalary!!
             }
@@ -87,18 +91,12 @@ class FilterSettingsFragment : Fragment() {
                 findNavController().popBackStack()
             }
             iconArea.setOnClickListener {
-                if (textViewArea.text.isNotEmpty()) {
-                    textViewArea.text = EMPTY_TEXT
-                } else {
-                    findNavController().navigate(R.id.action_filterSettingsFragment_to_selectWorkplaceFragment)
-                }
+                if (textViewArea.text.isNotEmpty()) {textViewArea.text = EMPTY_TEXT}
+                else {findNavController().navigate(R.id.action_filterSettingsFragment_to_selectWorkplaceFragment)}
             }
             iconIndustry.setOnClickListener {
-                if (textViewIndustry.text.isNotEmpty()) {
-                    textViewIndustry.text = EMPTY_TEXT
-                } else {
-                    findNavController().navigate(R.id.action_filterSettingsFragment_to_selectIndustryFragment)
-                }
+                if (textViewIndustry.text.isNotEmpty()) {textViewIndustry.text = EMPTY_TEXT}
+                else {findNavController().navigate(R.id.action_filterSettingsFragment_to_selectIndustryFragment)}
             }
             textViewArea.setOnClickListener {
                 findNavController().navigate(R.id.action_filterSettingsFragment_to_selectWorkplaceFragment)
