@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="resultNumber">
+        <item quantity="one">Найдена %d вакансия_one</item>
+        <item quantity="few">Найдено %d вакансии_few</item>
+        <item quantity="many">Найдено %d вакансий_many</item>
+        <item quantity="other">Найдено %d вакансий_other</item>
+    </plurals>
+</resources>

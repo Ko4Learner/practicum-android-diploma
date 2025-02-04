@@ -4,8 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.domain.models.Vacancy
 
 interface FavouritesRepository {
-
     suspend fun insertVacancy(vacancy: Vacancy)
     suspend fun deleteVacancy(vacancy: Vacancy)
     fun getVacancies(): Flow<List<Vacancy>>
+    suspend fun isVacancyFavorite(vacancyId: String): Boolean
 }

@@ -15,5 +15,6 @@ data class FavoriteVacancyEntity(
     val description: String?,
     val alternateUrl: String,
     val employment: String?,
-    val experience: String?
+    val experience: String?,
+    val keySkills: String?
 )

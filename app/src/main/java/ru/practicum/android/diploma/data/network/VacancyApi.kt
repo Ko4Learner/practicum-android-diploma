@@ -7,7 +7,7 @@ import retrofit2.http.QueryMap
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.data.dto.AreaDto
 import ru.practicum.android.diploma.data.dto.AreasResponse
-import ru.practicum.android.diploma.data.dto.ProfessionalRolesResponse
+import ru.practicum.android.diploma.data.dto.IndustryDto
 import ru.practicum.android.diploma.data.dto.VacanciesResponse
 import ru.practicum.android.diploma.data.dto.VacancyDto
 
@@ -38,8 +38,8 @@ interface VacancyApi {
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
         "HH-User-Agent: Application Practicum_17_android_team"
     )
-    @GET("/professional_roles")
-    suspend fun getProfessionalRoles(): ProfessionalRolesResponse
+    @GET("/industries")
+    suspend fun getIndustries(): List<IndustryDto>
 
     @Headers(
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
@@ -47,4 +47,11 @@ interface VacancyApi {
     )
     @GET("/areas/{area_id}")
     suspend fun getAreasById(@Path("area_id") id: String): AreasResponse
+
+    @Headers(
+        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
+        "HH-User-Agent: Application Practicum_17_android_team"
+    )
+    @GET("/areas")
+    suspend fun getAreas(): List<AreaDto>
 }

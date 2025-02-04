@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.data.impl
 
-import android.util.Log
+import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
@@ -17,13 +17,17 @@ import ru.practicum.android.diploma.domain.models.Page
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Salary
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.util.isConnected
 
 class VacancyRepositoryImpl(
     private val networkClient: NetworkClient,
     private val appDatabase: AppDatabase,
+    private val context: Context,
     private val gson: Gson
 ) : VacancyRepository {
     companion object {
+        private const val NO_CONNECTION = "NO_CONNECTION"
+        private const val BAD_REQUEST = "BAD_REQUEST"
         private const val SUCCESSFUL_REQUEST = 200
     }
 
@@ -48,16 +52,18 @@ class VacancyRepositoryImpl(
     override suspend fun getVacancy(vacancyId: String): Resource<Vacancy> {
         val result: Resource<Vacancy>
         val vacancy = appDatabase.getFavoriteVacancyDao().getVacancyById(vacancyId)
-        if (vacancy != null) {
-            result = Resource.Success(vacancy.toDomain())
+        result = if (vacancy != null) {
+            Resource.Success(vacancy.toDomain())
         } else {
+            if (!isConnected(context)) return Resource.Error(NO_CONNECTION)
             val request = Request.VacancyRequest(vacancyId)
-            val response = networkClient.doRequest(request) as VacancyResponse
-            Log.d("TestSearch", "VacancyResponse: ${response.vacancy}")
-            result = if (response.resultCode == SUCCESSFUL_REQUEST) {
-                Resource.Success(convertFromVacancyDto(response.vacancy))
+            val response = networkClient.doRequest(request)
+            if (response.resultCode == SUCCESSFUL_REQUEST) {
+                with(response as VacancyResponse) {
+                    Resource.Success(convertFromVacancyDto(this.vacancy))
+                }
             } else {
-                Resource.Error("${response.resultCode}")
+                Resource.Error(BAD_REQUEST)
             }
         }
         return result
@@ -84,7 +90,8 @@ class VacancyRepositoryImpl(
             vacancy.experience?.name,
             vacancy.description,
             vacancy.alternateUrl,
-            vacancy.isFavorite
+            vacancy.isFavorite,
+            vacancy.keySkills?.map { it.name }
         )
     }
 
@@ -100,7 +107,10 @@ class VacancyRepositoryImpl(
             alternateUrl = this.alternateUrl,
             employment = this.employment,
             experience = this.experience,
-            isFavorite = true
+            isFavorite = true,
+            keySkills = this.keySkills?.let {
+                gson.fromJson(it, object : TypeToken<List<String>>() {}.type)
+            }
         )
     }
 }

@@ -20,6 +20,7 @@
     <dimen name="_8dp">8dp</dimen>
     <dimen name="_56dp">56dp</dimen>
     <dimen name="_16dp">16dp</dimen>
+    <dimen name="_18dp">18dp</dimen>
     <dimen name="_14dp">14dp</dimen>
     <dimen name="_60dp">60dp</dimen>
     <dimen name="_4dp">4dp</dimen>
@@ -28,4 +29,11 @@
     <dimen name="_0dp">0dp</dimen>
     <dimen name="placeholder_height">233dp</dimen>
     <dimen name="placeholder_width">328dp</dimen>
+
+    <dimen name="_6dp">6dp</dimen>
+    <dimen name="_62dp">62dp</dimen>
+    <dimen name="_40dp">40dp</dimen>
+    <dimen name="_28dp">28dp</dimen>
+    <dimen name="_44dp">44dp</dimen>
+
 </resources>
