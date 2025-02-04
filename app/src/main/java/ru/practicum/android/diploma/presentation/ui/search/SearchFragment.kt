@@ -29,7 +29,6 @@ class SearchFragment : Fragment() {
     private val searchAdapter = VacancyAdapter()
     private var onClickVacancy: (Vacancy) -> Unit = {}
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

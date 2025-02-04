@@ -17,6 +17,25 @@
         app:navigationIcon="@drawable/toolbar_back"
         app:title="@string/choice_of_region" />
 
+
+    <LinearLayout
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/R_search">
+
+        <ProgressBar
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/blue" />
+    </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/R_search"
         android:layout_width="match_parent"
@@ -60,6 +79,7 @@
         app:layout_constraintTop_toBottomOf="@+id/R_search" />
 
     <TextView
+        android:id="@+id/textPlaceholder"
         style="@style/TextMedium_22_500"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

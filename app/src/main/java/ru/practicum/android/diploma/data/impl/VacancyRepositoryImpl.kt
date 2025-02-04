@@ -89,9 +89,9 @@ class VacancyRepositoryImpl(
             vacancy.employment?.name,
             vacancy.experience?.name,
             vacancy.description,
-            vacancy.keySkills?.map { it.name },
             vacancy.alternateUrl,
-            false
+            vacancy.isFavorite,
+            vacancy.keySkills?.map { it.name }
         )
     }
 
@@ -104,11 +104,13 @@ class VacancyRepositoryImpl(
             salary = this.salary?.let { gson.fromJson(it, object : TypeToken<Salary>() {}.type) },
             employerName = this.employerName,
             description = this.description,
-            keySkills = gson.fromJson(this.keySkills, object : TypeToken<List<String>>() {}.type),
             alternateUrl = this.alternateUrl,
             employment = this.employment,
             experience = this.experience,
-            isFavorite = true
+            isFavorite = true,
+            keySkills = this.keySkills?.let {
+                gson.fromJson(it, object : TypeToken<List<String>>() {}.type)
+            }
         )
     }
 }
