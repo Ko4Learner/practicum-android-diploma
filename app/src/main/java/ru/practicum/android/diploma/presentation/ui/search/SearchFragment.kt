@@ -79,11 +79,7 @@ class SearchFragment : Fragment() {
                 false
             )
             iconFilter.setOnClickListener {
-               /* findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)*/
-                requireActivity().supportFragmentManager.commit {
-                    replace(R.id.nav_host_fragment, SelectRegionFragment.newInstance())
-                    addToBackStack(null)
-                }
+               findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
             }
         }
         viewModel.getScreenState().observe(viewLifecycleOwner) { state ->
@@ -254,6 +250,5 @@ class SearchFragment : Fragment() {
         private const val NUMBER_4 = 4
         private const val NUMBER_10 = 10
         private const val NUMBER_100 = 100
-
     }
 }

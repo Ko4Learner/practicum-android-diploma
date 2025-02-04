@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.presentation.ui.filter.workplace.region
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,11 +28,9 @@ class SelectRegionViewModel(
         true
     ) { request ->
         if (request.isNotEmpty()) {
-            Log.d("mytag", "++click_debounce_ext++request=$request")
             val currentList = initListAreas.filter { it.name.startsWith(request, true) }
             if (currentList.isNotEmpty()) {
                 screenState.postValue(SearchRegionScreenState.ShowAreas(currentList))
-                Log.d("mytag", "++click_debounce++")
             }
         } else {
             screenState.postValue(SearchRegionScreenState.ShowAreas(initListAreas))

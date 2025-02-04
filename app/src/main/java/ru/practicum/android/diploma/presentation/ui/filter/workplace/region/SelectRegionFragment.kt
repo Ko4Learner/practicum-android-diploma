@@ -6,17 +6,18 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSelectRegionBinding
 import ru.practicum.android.diploma.presentation.adapter.AreaAdapter
 import ru.practicum.android.diploma.presentation.ui.search.SearchFragment.Companion.CLICK_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.util.debounce
-import org.koin.androidx.viewmodel.ext.android.viewModel
+
 class SelectRegionFragment : Fragment() {
 
     companion object {
@@ -28,10 +29,6 @@ class SelectRegionFragment : Fragment() {
     private val binding get() = _binding!!
     private val searchRegionAdapter = AreaAdapter()
     private var onClickRegion: (String) -> Unit = {}
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,10 +62,8 @@ class SelectRegionFragment : Fragment() {
             CLICK_DEBOUNCE_DELAY,
             viewLifecycleOwner.lifecycleScope,
             false
-        ) { region ->
-/*            val bundle = bundleOf(KEY_VACANCY to region)
-            findNavController().navigate(R.id.action_selectRegionFragment_to_selectWorkplaceFragment, bundle)*/
-            Toast.makeText(requireContext(),region,Toast.LENGTH_LONG).show()
+        ) {
+            findNavController().navigate(R.id.action_selectRegionFragment_to_selectWorkplaceFragment)
         }
 
         searchRegionAdapter.onItemClick = { region -> onClickRegion(region) }
@@ -118,8 +113,12 @@ class SelectRegionFragment : Fragment() {
 
                 }
             }
-
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
 
