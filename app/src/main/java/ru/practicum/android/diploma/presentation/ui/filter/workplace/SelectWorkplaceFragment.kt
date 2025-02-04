@@ -92,7 +92,6 @@ class SelectWorkplaceFragment : Fragment() {
             }
         }
 
-
         if (!binding.textViewCountry.text.isNullOrEmpty()) {
             binding.saveButton.visibility = View.VISIBLE
         } else {
@@ -116,7 +115,6 @@ class SelectWorkplaceFragment : Fragment() {
             View.GONE
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
