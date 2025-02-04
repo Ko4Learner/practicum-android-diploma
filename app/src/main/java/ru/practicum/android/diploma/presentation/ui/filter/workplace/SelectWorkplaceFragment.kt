@@ -58,6 +58,24 @@ class SelectWorkplaceFragment : Fragment() {
             }
         }
 
+        buttonProcessing()
+
+        binding.textViewCountry.setOnClickListener {
+            findNavController().navigate(R.id.action_selectWorkplaceFragment_to_selectCountryFragment)
+        }
+
+        binding.textViewRegion.setOnClickListener {
+            findNavController().navigate(R.id.action_selectWorkplaceFragment_to_selectRegionFragment)
+        }
+
+        updateSaveButtonVisibility()
+
+        binding.saveButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun buttonProcessing() {
         binding.iconCountry.setOnClickListener {
             if (binding.textViewCountry.text.isNotEmpty()) {
                 binding.textViewCountry.text = EMPTY_TEXT
@@ -74,34 +92,6 @@ class SelectWorkplaceFragment : Fragment() {
             } else {
                 findNavController().navigate(R.id.action_selectWorkplaceFragment_to_selectRegionFragment)
             }
-        }
-
-        binding.textViewCountry.setOnClickListener {
-            findNavController().navigate(R.id.action_selectWorkplaceFragment_to_selectCountryFragment)
-        }
-
-        binding.textViewRegion.setOnClickListener {
-            findNavController().navigate(R.id.action_selectWorkplaceFragment_to_selectRegionFragment)
-        }
-
-        binding.iconRegion.setOnClickListener {
-            if (binding.textViewRegion.text.isNotEmpty()) {
-                binding.textViewRegion.text = EMPTY_TEXT
-            } else {
-                findNavController().navigate(R.id.action_selectWorkplaceFragment_to_selectRegionFragment)
-            }
-        }
-
-        if (!binding.textViewCountry.text.isNullOrEmpty()) {
-            binding.saveButton.visibility = View.VISIBLE
-        } else {
-            binding.saveButton.visibility = View.GONE
-        }
-
-        updateSaveButtonVisibility()
-
-        binding.saveButton.setOnClickListener {
-            findNavController().popBackStack()
         }
     }
 
