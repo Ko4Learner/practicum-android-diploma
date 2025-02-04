@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +18,7 @@ import ru.practicum.android.diploma.util.debounce
 
 class SelectCountryFragment : Fragment() {
 
-    private val viewModel: SelectCountryViewModel by viewModels()
+    private val viewModel: SelectCountryViewModel by viewModel()
     private var _binding: FragmentSelectCountryBinding? = null
     private val binding get() = _binding!!
     private var adapter = AreaAdapter()
@@ -53,6 +53,10 @@ class SelectCountryFragment : Fragment() {
 
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
+        }
+
+        binding.ToolbarCountry.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 

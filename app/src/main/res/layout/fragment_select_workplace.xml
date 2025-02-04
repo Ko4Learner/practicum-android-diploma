@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/ToolbarWorkspace" />
 
     <TextView
-        android:id="@+id/helperTextViewArea"
+        android:id="@+id/helperTextViewCountry"
         style="@style/filter_textView_helper"
         android:layout_marginTop="@dimen/_28dp"
         android:text="@string/country"
@@ -37,12 +37,12 @@
         app:layout_constraintTop_toBottomOf="@id/ToolbarWorkspace" />
 
     <TextView
-        android:id="@+id/textViewArea"
+        android:id="@+id/textViewCountry"
         style="@style/filter_textView"
         android:hint="@string/country"
         app:layout_constraintEnd_toStartOf="@id/iconCountry"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/helperTextViewArea"
+        app:layout_constraintTop_toBottomOf="@id/helperTextViewCountry"
         app:layout_goneMarginTop="@dimen/margin_32" />
 
     <ImageView
@@ -56,7 +56,7 @@
         app:layout_constraintTop_toBottomOf="@+id/iconCountry" />
 
     <TextView
-        android:id="@+id/helperTextViewIndustry"
+        android:id="@+id/helperTextViewRegion"
         style="@style/filter_textView_helper"
         android:layout_marginTop="@dimen/margin_32"
         android:text="@string/region"
@@ -65,15 +65,16 @@
         app:layout_constraintTop_toBottomOf="@id/iconCountry" />
 
     <TextView
-        android:id="@+id/textViewIndustry"
+        android:id="@+id/textViewRegion"
         style="@style/filter_textView"
         android:hint="@string/region"
         app:layout_constraintEnd_toStartOf="@id/iconCountry"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/helperTextViewIndustry"
+        app:layout_constraintTop_toBottomOf="@id/helperTextViewRegion"
         app:layout_goneMarginTop="@dimen/_40dp" />
 
     <Button
+        android:id="@+id/save_button"
         style="@style/TextMedium_16_500"
         android:layout_width="match_parent"
         android:layout_height="59dp"
