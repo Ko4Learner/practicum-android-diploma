@@ -11,7 +11,6 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +20,6 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.adapter.VacancyAdapter
-import ru.practicum.android.diploma.presentation.ui.filter.workplace.region.SelectRegionFragment
 import ru.practicum.android.diploma.util.debounce
 
 class SearchFragment : Fragment() {
@@ -80,7 +78,7 @@ class SearchFragment : Fragment() {
                 false
             )
             iconFilter.setOnClickListener {
-               findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
+                findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
             }
         }
         viewModel.getScreenState().observe(viewLifecycleOwner) { state ->
