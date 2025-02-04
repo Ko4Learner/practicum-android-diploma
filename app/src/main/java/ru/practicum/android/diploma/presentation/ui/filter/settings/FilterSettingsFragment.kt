@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -32,13 +33,24 @@ class FilterSettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupListeners()
 
-        binding.salaryField.addTextChangedListener(
-            onTextChanged = { charSequence, _, _, _ ->
-                binding.iconSearchField.isVisible = !charSequence.isNullOrEmpty()
-                viewModel.changeExpectedSalary(charSequence.toString())
-                viewModel.checkEmptyFilter()
+        binding.apply {
+            salaryField.addTextChangedListener(
+                onTextChanged = { charSequence, _, _, _ ->
+                    binding.iconSearchField.isVisible = !charSequence.isNullOrEmpty()
+                    viewModel.changeExpectedSalary(charSequence.toString())
+                    viewModel.checkEmptyFilter()
+                }
+            )
+            salaryField.setOnFocusChangeListener { _, b ->
+                helperTextViewSalary.setTextColor(
+                    if (b) {
+                        AppCompatResources.getColorStateList(requireContext(), R.color.blue)
+                    } else {
+                        AppCompatResources.getColorStateList(requireContext(), R.color.DarkGraylightGray)
+                    }
+                )
             }
-        )
+        }
         viewModel.observeFilter().observe(viewLifecycleOwner) {
             render(it)
         }

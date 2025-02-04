@@ -77,11 +77,25 @@
         android:id="@+id/salaryField"
         style="@style/mainSearchField"
         android:layout_marginVertical="@dimen/_44dp"
+        android:gravity="bottom"
         android:hint="@string/enter_the_amount"
         android:inputType="number"
+        android:paddingBottom="@dimen/padding_8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iconIndustry" />
+
+    <TextView
+        android:id="@+id/helperTextViewSalary"
+        style="@style/TextRegular_12_400"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_14dp"
+        android:layout_marginTop="@dimen/_12dp"
+        android:text="@string/the_expected_salary"
+        android:textColor="@color/DarkGraylightGray"
+        app:layout_constraintStart_toStartOf="@+id/salaryField"
+        app:layout_constraintTop_toTopOf="@+id/salaryField" />
 
     <ImageView
         android:id="@+id/iconSearchField"
