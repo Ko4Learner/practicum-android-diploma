@@ -40,7 +40,7 @@ class SelectRegionViewModel(
     fun initLoadAreas() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                if (filterParameters.country.isNullOrEmpty()) {
+                if (filterParameters.country == null) {
                     filterRequestInteractor.getAreas().collect() { result -> resultHandler(result) }
                 } else {
                     var countryId: String? = null
@@ -48,7 +48,7 @@ class SelectRegionViewModel(
                         when (result) {
                             is Resource.Success -> {
                                 val listCountries = result.data
-                                countryId = listCountries.find { it.name == filterParameters.country }?.id
+                                countryId = listCountries.find { it.name == filterParameters.country!!.name }?.id
                             }
 
                             else -> {
@@ -56,7 +56,7 @@ class SelectRegionViewModel(
                         }
                     }
                     if (!countryId.isNullOrEmpty()) {
-                        filterRequestInteractor.getAreasById(filterParameters.country!!)
+                        filterRequestInteractor.getAreasById(filterParameters.country!!.id)
                             .collect() { result -> resultHandler(result) }
                     } else {
                         screenState.postValue(SearchRegionScreenState.Error)
@@ -82,6 +82,10 @@ class SelectRegionViewModel(
                 }
             }
         }
+    }
+
+    fun saveRegion(region: Area) {
+        filterParameters.area = Area(region.id,region.parentId, region.name)
     }
 
     companion object {

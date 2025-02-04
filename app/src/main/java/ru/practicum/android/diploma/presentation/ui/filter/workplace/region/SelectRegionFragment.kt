@@ -14,21 +14,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSelectRegionBinding
+import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.presentation.adapter.AreaAdapter
 import ru.practicum.android.diploma.presentation.ui.search.SearchFragment.Companion.CLICK_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.util.debounce
 
 class SelectRegionFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = SelectRegionFragment()
-    }
-
     private val viewModel: SelectRegionViewModel by viewModel()
     private var _binding: FragmentSelectRegionBinding? = null
     private val binding get() = _binding!!
     private val searchRegionAdapter = AreaAdapter()
-    private var onClickRegion: (String) -> Unit = {}
+    private var onClickRegion: (Area) -> Unit = {}
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,8 +59,9 @@ class SelectRegionFragment : Fragment() {
             CLICK_DEBOUNCE_DELAY,
             viewLifecycleOwner.lifecycleScope,
             false
-        ) {
-            findNavController().navigate(R.id.action_selectRegionFragment_to_selectWorkplaceFragment)
+        ) { region ->
+            viewModel.saveRegion(region)
+            findNavController().navigateUp()
         }
 
         searchRegionAdapter.onItemClick = { region -> onClickRegion(region) }
