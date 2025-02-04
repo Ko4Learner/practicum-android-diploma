@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -30,7 +31,6 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
     private val searchAdapter = VacancyAdapter()
     private var onClickVacancy: (Vacancy) -> Unit = {}
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,11 +64,12 @@ class SearchFragment : Fragment() {
                     binding.iconSearchField.setImageResource(R.drawable.del_search_string_icon)
                 } else {
                     binding.iconSearchField.setImageResource(R.drawable.search_icon_search_fragment)
+                    renderStartScreen()
                 }
             }
 
             override fun afterTextChanged(s: Editable?) {
-                viewModel.searchDebounce(s.toString())
+                viewModel.searchDebounce(s?.toString() ?: "")
             }
         })
         binding.apply {
@@ -83,18 +84,42 @@ class SearchFragment : Fragment() {
             }
         }
         viewModel.getScreenState().observe(viewLifecycleOwner) { state ->
+            clearScreen()
             renderScreen(state)
+        }
+        viewModel.getTypeFilterIcon().observe(viewLifecycleOwner) {
+            binding.iconFilter.setImageDrawable(
+                if (it) {
+                    AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.filter_icon_search_fragment
+                    )
+                } else {
+                    AppCompatResources.getDrawable(
+                        requireContext(),
+                        R.drawable.no_empty_filter_icon
+                    )
+                }
+            )
         }
         viewModel.getScreenToast().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is SingleState.PagingErrServer -> {
-                    Toast.makeText(requireContext(), getString(R.string.error_occurred), Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.error_occurred),
+                        Toast.LENGTH_LONG
+                    ).show()
                     binding.progressBar.isVisible = false
                     viewModel.resetScreenToast()
                 }
 
                 is SingleState.PagingErrInternet -> {
-                    Toast.makeText(requireContext(), getString(R.string.check_connect), Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.check_connect),
+                        Toast.LENGTH_LONG
+                    ).show()
                     binding.progressBar.isVisible = false
                     viewModel.resetScreenToast()
                 }
@@ -120,8 +145,17 @@ class SearchFragment : Fragment() {
         })
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.checkFilterParameters()
+    }
+
     private fun renderScreen(state: SearchScreenState) {
-        clearScreen()
         when (state) {
             is SearchScreenState.ServerError -> {
                 renderServerError()
@@ -132,7 +166,7 @@ class SearchFragment : Fragment() {
             }
 
             is SearchScreenState.ShowVacancies -> {
-                showVacansies(state.page.vacancies, state.page.found)
+                showVacancies(state.page.vacancies, state.page.found)
             }
 
             is SearchScreenState.PagingSuccess -> {
@@ -163,7 +197,12 @@ class SearchFragment : Fragment() {
         clearScreen()
         binding.apply {
             errorMessageAndImg.setText(R.string.do_not_have_internet)
-            errorMessageAndImg.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.no_internet, 0, 0)
+            errorMessageAndImg.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                0,
+                R.drawable.no_internet,
+                0,
+                0
+            )
             errorMessageAndImg.isVisible = true
         }
     }
@@ -172,7 +211,12 @@ class SearchFragment : Fragment() {
         clearScreen()
         binding.apply {
             errorMessageAndImg.setText(R.string.could_not_get_job_list)
-            errorMessageAndImg.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.no_vacancies, 0, 0)
+            errorMessageAndImg.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                0,
+                R.drawable.no_vacancies,
+                0,
+                0
+            )
             errorMessageAndImg.isVisible = true
         }
     }
@@ -192,7 +236,7 @@ class SearchFragment : Fragment() {
         binding.progressBar.isVisible = true
     }
 
-    private fun showVacansies(vacancies: List<Vacancy>, numberVac: Int) {
+    private fun showVacancies(vacancies: List<Vacancy>, numberVac: Int) {
         clearScreen()
         val stringResult = getMessage(numberVac)
         binding.searchResult.text = stringResult
@@ -210,7 +254,12 @@ class SearchFragment : Fragment() {
         clearScreen()
         binding.apply {
             errorMessageAndImg.setText(R.string.server_error)
-            errorMessageAndImg.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.server_err, 0, 0)
+            errorMessageAndImg.setCompoundDrawablesWithIntrinsicBounds(
+                0,
+                R.drawable.server_err,
+                0,
+                0
+            )
             errorMessageAndImg.isVisible = true
         }
     }
@@ -243,7 +292,6 @@ class SearchFragment : Fragment() {
     companion object {
         const val KEY_VACANCY = "KEY_VACANCY"
         const val CLICK_DEBOUNCE_DELAY = 1000L
-        fun newInstance() = SearchFragment()
         private const val NUMBER_1 = 1
         private const val NUMBER_2 = 2
         private const val NUMBER_3 = 3

@@ -49,7 +49,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/vacancy_not_found_image"
@@ -97,6 +97,31 @@
         android:layout_marginTop="@dimen/margin_16"
         android:gravity="center_horizontal"
         android:text="@string/server_error"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vacancy_server_error_image" />
+
+    <ImageView
+        android:id="@+id/vacancy_no_internet_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/no_internet"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/vacancy_no_internet_text"
+        style="@style/TextMedium_22_500"
+        android:layout_width="@dimen/padding_0"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        android:gravity="center_horizontal"
+        android:text="@string/do_not_have_internet"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -210,10 +235,10 @@
                 android:layout_width="@dimen/padding_0"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_24"
+                android:text="@string/required_experience"
                 app:layout_constraintEnd_toStartOf="@id/guide_right_border"
                 app:layout_constraintStart_toEndOf="@id/guide_left_border"
-                app:layout_constraintTop_toBottomOf="@id/vacancy_card"
-                tools:text="Требуемый опыт" />
+                app:layout_constraintTop_toBottomOf="@id/vacancy_card" />
 
             <TextView
                 android:id="@+id/vacancy_experience_text"
@@ -243,13 +268,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_32"
                 android:maxLines="1"
+                android:text="@string/description_vacancy"
                 app:layout_constraintEnd_toStartOf="@id/guide_right_border"
                 app:layout_constraintStart_toEndOf="@id/guide_left_border"
-                app:layout_constraintTop_toBottomOf="@id/vacancy_employment_text"
-                tools:text="Описание вакансии" />
+                app:layout_constraintTop_toBottomOf="@id/vacancy_employment_text" />
 
             <TextView
-                android:id="@+id/vacancy_job_description_title"
+                android:id="@+id/vacancy_job_description_text"
                 style="@style/TextMedium_16_500"
                 android:layout_width="@dimen/padding_0"
                 android:layout_height="wrap_content"
@@ -258,60 +283,8 @@
                 app:layout_constraintEnd_toStartOf="@id/guide_right_border"
                 app:layout_constraintStart_toEndOf="@id/guide_left_border"
                 app:layout_constraintTop_toBottomOf="@id/vacancy_description_title"
-                tools:text="Обязанности" />
+                tools:text="@string/description_vacancy" />
 
-            <TextView
-                android:id="@+id/vacancy_job_description_text"
-                style="@style/TextMedium_16_500"
-                android:layout_width="@dimen/padding_0"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                app:layout_constraintEnd_toStartOf="@id/guide_right_border"
-                app:layout_constraintStart_toEndOf="@id/guide_left_border"
-                app:layout_constraintTop_toBottomOf="@id/vacancy_job_description_title"
-                tools:text="* Список обязанностей" />
-
-            <TextView
-                android:id="@+id/vacancy_skills_title"
-                style="@style/TextMedium_16_500"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16"
-                app:layout_constraintEnd_toStartOf="@id/guide_right_border"
-                app:layout_constraintStart_toEndOf="@id/guide_left_border"
-                app:layout_constraintTop_toBottomOf="@id/vacancy_job_description_text"
-                tools:text="Требования" />
-
-            <TextView
-                android:id="@+id/vacancy_skills_text"
-                style="@style/TextRegular_16_400"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@id/guide_right_border"
-                app:layout_constraintStart_toEndOf="@id/guide_left_border"
-                app:layout_constraintTop_toBottomOf="@id/vacancy_skills_title"
-                tools:text="* список требований" />
-
-            <TextView
-                android:id="@+id/vacancy_conditions_title"
-                style="@style/TextMedium_16_500"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_16"
-                app:layout_constraintEnd_toStartOf="@id/guide_right_border"
-                app:layout_constraintStart_toEndOf="@id/guide_left_border"
-                app:layout_constraintTop_toBottomOf="@id/vacancy_skills_text"
-                tools:text="Условия" />
-
-            <TextView
-                android:id="@+id/vacancy_conditions_text"
-                style="@style/TextRegular_16_400"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@id/guide_right_border"
-                app:layout_constraintStart_toEndOf="@id/guide_left_border"
-                app:layout_constraintTop_toBottomOf="@id/vacancy_conditions_title"
-                tools:text="* список условий" />
 
             <TextView
 
@@ -320,10 +293,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_16"
+                android:text="@string/key_skills"
                 app:layout_constraintEnd_toStartOf="@id/guide_right_border"
                 app:layout_constraintStart_toEndOf="@id/guide_left_border"
-                app:layout_constraintTop_toBottomOf="@id/vacancy_conditions_text"
-                tools:text="Ключевые навыки" />
+                app:layout_constraintTop_toBottomOf="@id/vacancy_job_description_text" />
 
             <TextView
                 android:id="@+id/vacancy_key_skills_text"
