@@ -40,6 +40,19 @@ class FilterSettingsViewModel(
             null
         }
         equalsFilters()
+        checkEmptyFilter()
+    }
+
+    fun clearArea(){
+        filterParameters.area = null
+        equalsFilters()
+        checkEmptyFilter()
+    }
+
+    fun clearIndustry(){
+        filterParameters.industry = null
+        equalsFilters()
+        checkEmptyFilter()
     }
 
     fun changeOnlyWithSalary() {

@@ -22,7 +22,7 @@ class SelectIndustryViewModel(
         viewModelScope,
         true
     ) { request ->
-        if (request != lastSearch && request.isNotEmpty()) {
+        if (request != lastSearch) {
             lastSearch = request
             searchIndustry(request)
         }

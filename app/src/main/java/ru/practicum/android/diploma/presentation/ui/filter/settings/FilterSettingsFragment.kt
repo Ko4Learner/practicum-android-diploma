@@ -38,7 +38,6 @@ class FilterSettingsFragment : Fragment() {
                 onTextChanged = { charSequence, _, _, _ ->
                     binding.iconSearchField.isVisible = !charSequence.isNullOrEmpty()
                     viewModel.changeExpectedSalary(charSequence.toString())
-                    viewModel.checkEmptyFilter()
                 }
             )
             salaryField.setOnFocusChangeListener { _, b ->
@@ -46,7 +45,10 @@ class FilterSettingsFragment : Fragment() {
                     if (b) {
                         AppCompatResources.getColorStateList(requireContext(), R.color.blue)
                     } else {
-                        AppCompatResources.getColorStateList(requireContext(), R.color.DarkGraylightGray)
+                        AppCompatResources.getColorStateList(
+                            requireContext(),
+                            R.color.DarkGraylightGray
+                        )
                     }
                 )
             }
@@ -66,12 +68,12 @@ class FilterSettingsFragment : Fragment() {
         binding.apply {
             textViewArea.text = renderArea(parameters)
             if (!textViewArea.text.isNullOrEmpty()) {
-                iconArea.setImageResource(R.drawable.del_search_string_icon)
+                iconArea.setImageResource(R.drawable.del_search_string_icon_24dp)
                 helperTextViewArea.isVisible = true
             }
             textViewIndustry.text = parameters.industry
             if (!textViewIndustry.text.isNullOrEmpty()) {
-                iconIndustry.setImageResource(R.drawable.del_search_string_icon)
+                iconIndustry.setImageResource(R.drawable.del_search_string_icon_24dp)
                 helperTextViewIndustry.isVisible = true
             }
             if (parameters.expectedSalary != null) {
@@ -98,23 +100,10 @@ class FilterSettingsFragment : Fragment() {
     }
 
     private fun setupListeners() {
+        setupIconAreaAndIndustryListeners()
         binding.apply {
             toolbar.setOnClickListener {
                 findNavController().popBackStack()
-            }
-            iconArea.setOnClickListener {
-                if (textViewArea.text.isNotEmpty()) {
-                    textViewArea.text = EMPTY_TEXT
-                } else {
-                    findNavController().navigate(R.id.action_filterSettingsFragment_to_selectWorkplaceFragment)
-                }
-            }
-            iconIndustry.setOnClickListener {
-                if (textViewIndustry.text.isNotEmpty()) {
-                    textViewIndustry.text = EMPTY_TEXT
-                } else {
-                    findNavController().navigate(R.id.action_filterSettingsFragment_to_selectIndustryFragment)
-                }
             }
             textViewArea.setOnClickListener {
                 findNavController().navigate(R.id.action_filterSettingsFragment_to_selectWorkplaceFragment)
@@ -133,6 +122,41 @@ class FilterSettingsFragment : Fragment() {
             }
             resetFilter.setOnClickListener {
                 viewModel.resetFilterParameters()
+            }
+        }
+    }
+
+    private fun setupIconAreaAndIndustryListeners() {
+        binding.apply {
+            iconArea.setOnClickListener {
+                if (textViewArea.text.isNotEmpty()) {
+                    textViewArea.text = EMPTY_TEXT
+                    viewModel.clearArea()
+                    helperTextViewArea.visibility = View.GONE
+                    iconArea.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            requireContext(),
+                            R.drawable.arrow_forward
+                        )
+                    )
+                } else {
+                    findNavController().navigate(R.id.action_filterSettingsFragment_to_selectWorkplaceFragment)
+                }
+            }
+            iconIndustry.setOnClickListener {
+                if (textViewIndustry.text.isNotEmpty()) {
+                    textViewIndustry.text = EMPTY_TEXT
+                    viewModel.clearIndustry()
+                    helperTextViewIndustry.visibility = View.GONE
+                    iconIndustry.setImageDrawable(
+                        AppCompatResources.getDrawable(
+                            requireContext(),
+                            R.drawable.arrow_forward
+                        )
+                    )
+                } else {
+                    findNavController().navigate(R.id.action_filterSettingsFragment_to_selectIndustryFragment)
+                }
             }
         }
     }
