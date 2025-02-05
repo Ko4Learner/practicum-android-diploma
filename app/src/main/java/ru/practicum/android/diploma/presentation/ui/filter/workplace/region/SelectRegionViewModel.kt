@@ -123,7 +123,6 @@ class SelectRegionViewModel(
     }
 
     private fun saveCountryById(parentId: String?) {
-
         var itemId = parentId
         var parent: Area?
 
