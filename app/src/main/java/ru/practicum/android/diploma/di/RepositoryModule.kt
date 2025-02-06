@@ -18,7 +18,7 @@ val repositoryModule = module {
     }
 
     single<VacancyRepository> {
-        VacancyRepositoryImpl(get(), get(), androidContext(), get())
+        VacancyRepositoryImpl(get(), get(), get())
     }
 
     single<FilterParametersRepository> {

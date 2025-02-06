@@ -36,7 +36,7 @@ class IndustryAdapter(
         holder.bind(industries[position])
         val radioButton = holder.itemView.findViewById<RadioButton>(R.id.industryRadioButton)
 
-        radioButton.setOnClickListener {
+        holder.itemView.setOnClickListener {
             val isSame = holder.adapterPosition != selectedItem
             radioButton.isChecked = isSame
             onItemClick(selectedItem, isSame)
