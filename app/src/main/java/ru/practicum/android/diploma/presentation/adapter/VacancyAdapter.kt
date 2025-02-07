@@ -62,7 +62,8 @@ class VacancyAdapter : RecyclerView.Adapter<VacancyAdapter.VacancyViewHolder>() 
                 Glide.with(itemView)
                     .load(vacancy.logoUrl90)
                     .placeholder(R.drawable.image_placeholder)
-                    .transform(CenterCrop(),
+                    .transform(
+                        CenterCrop(),
                         RoundedCorners(
                             TypedValue.applyDimension(
                                 TypedValue.COMPLEX_UNIT_DIP,
