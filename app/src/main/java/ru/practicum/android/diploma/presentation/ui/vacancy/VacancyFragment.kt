@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.presentation.ui.vacancy
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
@@ -85,6 +88,16 @@ class VacancyFragment : Fragment() {
         Glide.with(this)
             .load(vacancy.logoUrl90)
             .placeholder(R.drawable.image_placeholder)
+            .transform(
+                CenterCrop(),
+                RoundedCorners(
+                    TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        ROUNDED_CORNERS_IMAGE_VACANCY,
+                        requireContext().resources.displayMetrics
+                    ).toInt()
+                )
+            )
             .into(binding.vacancyImage)
 
         binding.vacancyCompanyTitle.text = vacancy.employerName
@@ -213,7 +226,7 @@ class VacancyFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = VacancyFragment()
         private const val KEY_VACANCY = "KEY_VACANCY"
+        private const val ROUNDED_CORNERS_IMAGE_VACANCY = 12F
     }
 }

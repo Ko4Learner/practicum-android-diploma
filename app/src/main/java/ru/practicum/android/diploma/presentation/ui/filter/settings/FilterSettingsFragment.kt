@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -32,6 +33,7 @@ class FilterSettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupListeners()
+        addCallback()
 
         binding.apply {
             salaryField.addTextChangedListener(
@@ -110,6 +112,7 @@ class FilterSettingsFragment : Fragment() {
         setupButtonListeners()
         binding.apply {
             toolbar.setOnClickListener {
+                viewModel.saveFilterParameters()
                 findNavController().popBackStack()
             }
             textViewArea.setOnClickListener {
@@ -131,6 +134,7 @@ class FilterSettingsFragment : Fragment() {
         binding.apply {
             enterFilter.setOnClickListener {
                 viewModel.saveFilterParameters()
+                findNavController().popBackStack()
             }
             resetFilter.setOnClickListener {
                 viewModel.resetFilterParameters()
@@ -185,6 +189,16 @@ class FilterSettingsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun addCallback() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
+            OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                viewModel.saveFilterParameters()
+                findNavController().popBackStack()
+            }
+        })
     }
 
     override fun onDestroyView() {

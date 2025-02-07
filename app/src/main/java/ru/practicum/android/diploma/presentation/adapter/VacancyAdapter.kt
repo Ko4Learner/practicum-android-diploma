@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Salary
@@ -61,8 +62,7 @@ class VacancyAdapter : RecyclerView.Adapter<VacancyAdapter.VacancyViewHolder>() 
                 Glide.with(itemView)
                     .load(vacancy.logoUrl90)
                     .placeholder(R.drawable.image_placeholder)
-                    .centerCrop()
-                    .transform(
+                    .transform(CenterCrop(),
                         RoundedCorners(
                             TypedValue.applyDimension(
                                 TypedValue.COMPLEX_UNIT_DIP,
