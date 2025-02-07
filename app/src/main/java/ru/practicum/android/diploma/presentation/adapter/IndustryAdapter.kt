@@ -47,6 +47,8 @@ class IndustryAdapter(
             }
         }
 
+        radioButton.isClickable = false
+
         radioButton.isChecked = position == selectedItem
     }
 
