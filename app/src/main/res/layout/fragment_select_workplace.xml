@@ -1,13 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.ui.filter.workplace.SelectWorkplaceFragment">
 
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        style="@style/Toolbar"
+        android:id="@+id/ToolbarWorkspace"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Экран с выбором места работы" />
+        android:layout_height="64dp"
+        android:paddingVertical="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/toolbar_back"
+        app:title="@string/choice_of_work" />
 
-</FrameLayout>
+
+    <ImageView
+        android:id="@+id/iconCountry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_32"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:src="@drawable/arrow_forward"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ToolbarWorkspace" />
+
+    <TextView
+        android:id="@+id/helperTextViewCountry"
+        style="@style/filter_textView_helper"
+        android:layout_marginTop="@dimen/_28dp"
+        android:text="@string/country"
+        app:layout_constraintEnd_toStartOf="@id/iconCountry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ToolbarWorkspace" />
+
+    <TextView
+        android:id="@+id/textViewCountry"
+        style="@style/filter_textView"
+        android:hint="@string/country"
+        app:layout_constraintEnd_toStartOf="@id/iconCountry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/helperTextViewCountry"
+        app:layout_goneMarginTop="@dimen/margin_32" />
+
+    <ImageView
+        android:id="@+id/iconRegion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_40dp"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:src="@drawable/arrow_forward"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iconCountry" />
+
+    <TextView
+        android:id="@+id/helperTextViewRegion"
+        style="@style/filter_textView_helper"
+        android:layout_marginTop="@dimen/margin_32"
+        android:text="@string/region"
+        app:layout_constraintEnd_toStartOf="@id/iconCountry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iconCountry" />
+
+    <TextView
+        android:id="@+id/textViewRegion"
+        style="@style/filter_textView"
+        android:hint="@string/region"
+        app:layout_constraintEnd_toStartOf="@id/iconCountry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/helperTextViewRegion"
+        app:layout_goneMarginTop="@dimen/_40dp" />
+
+    <Button
+        android:id="@+id/save_button"
+        style="@style/TextMedium_16_500"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:layout_marginHorizontal="17dp"
+        android:layout_marginBottom="@dimen/margin_24"
+        android:background="@drawable/placeholder_search"
+        android:text="@string/choice"
+        android:textAllCaps="false"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

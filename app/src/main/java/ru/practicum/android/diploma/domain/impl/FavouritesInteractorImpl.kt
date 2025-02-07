@@ -20,4 +20,8 @@ class FavouritesInteractorImpl(
         return repository.getVacancies()
     }
 
+    override suspend fun isVacancyFavorite(vacancyId: String): Boolean {
+        return repository.isVacancyFavorite(vacancyId)
+    }
+
 }

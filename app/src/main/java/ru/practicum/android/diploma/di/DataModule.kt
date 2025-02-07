@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.di
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
@@ -14,6 +16,7 @@ import ru.practicum.android.diploma.data.network.VacancyApi
 val dataModule = module {
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .fallbackToDestructiveMigration()
             .build()
     }
 
@@ -26,7 +29,12 @@ val dataModule = module {
     }
 
     single<NetworkClient> {
-        RetrofitNetworkClient(get())
+        RetrofitNetworkClient(get(), androidContext())
+    }
+
+    single<SharedPreferences> {
+        androidContext()
+            .getSharedPreferences("local_storage", Context.MODE_PRIVATE)
     }
 
     factory { Gson() }

@@ -14,5 +14,7 @@ data class VacancyDto(
     val description: String?,
     @SerializedName("alternate_url")
     val alternateUrl: String,
-    val isFavorite: Boolean
+    val isFavorite: Boolean,
+    @SerializedName("key_skills")
+    val keySkills: List<KeySkillsDto>?
 )
