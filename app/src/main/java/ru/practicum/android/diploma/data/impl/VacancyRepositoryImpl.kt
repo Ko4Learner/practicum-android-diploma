@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.data.impl
 
-import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
@@ -17,32 +16,31 @@ import ru.practicum.android.diploma.domain.models.Page
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Salary
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.util.isConnected
 
 class VacancyRepositoryImpl(
     private val networkClient: NetworkClient,
     private val appDatabase: AppDatabase,
-    private val context: Context,
     private val gson: Gson
 ) : VacancyRepository {
     companion object {
-        private const val NO_CONNECTION = "NO_CONNECTION"
         private const val BAD_REQUEST = "BAD_REQUEST"
         private const val SUCCESSFUL_REQUEST = 200
     }
 
     override fun getVacancies(options: Map<String, String>): Flow<Resource<Page>> = flow {
         val request = Request.VacanciesRequest(options)
-        val response = networkClient.doRequest(request) as VacanciesResponse
+        val response = networkClient.doRequest(request)
         val result = if (response.resultCode == SUCCESSFUL_REQUEST) {
-            Resource.Success(
-                Page(
-                    response.items.map { convertFromVacancyDto(it) },
-                    response.page,
-                    response.pages,
-                    response.found
+            with(response as VacanciesResponse) {
+                Resource.Success(
+                    Page(
+                        this.items.map { convertFromVacancyDto(it) },
+                        this.page,
+                        this.pages,
+                        this.found
+                    )
                 )
-            )
+            }
         } else {
             Resource.Error("${response.resultCode}")
         }
@@ -55,7 +53,6 @@ class VacancyRepositoryImpl(
         result = if (vacancy != null) {
             Resource.Success(vacancy.toDomain())
         } else {
-            if (!isConnected(context)) return Resource.Error(NO_CONNECTION)
             val request = Request.VacancyRequest(vacancyId)
             val response = networkClient.doRequest(request)
             if (response.resultCode == SUCCESSFUL_REQUEST) {
