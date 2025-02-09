@@ -48,5 +48,11 @@ class SelectCountryViewModel(
         } else {
             filterParameters.country = Country(country.id!!, country.name)
         }
+
+        if (filterParameters.area != null &&
+            filterParameters.country?.id != filterParameters.area?.parentId
+        ) {
+            filterParameters.area = null
+        }
     }
 }

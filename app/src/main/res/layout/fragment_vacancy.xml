@@ -302,6 +302,7 @@
                 android:id="@+id/vacancy_key_skills_text"
                 style="@style/TextRegular_16_400"
                 android:layout_width="0dp"
+                android:paddingBottom="@dimen/padding_16"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toStartOf="@id/guide_right_border"
                 app:layout_constraintStart_toEndOf="@id/guide_left_border"
