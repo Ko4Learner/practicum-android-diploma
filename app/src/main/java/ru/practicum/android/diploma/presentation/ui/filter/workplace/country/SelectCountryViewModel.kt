@@ -1,10 +1,12 @@
 package ru.practicum.android.diploma.presentation.ui.filter.workplace.country
 
+import androidx.core.content.ContextCompat.getString
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.api.FilterRequestInteractor
 import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.domain.models.Country
@@ -36,12 +38,16 @@ class SelectCountryViewModel(
             }
 
             is Resource.Error -> {
-                _stateLiveData.value = CountryState.Error(resource.message)
+                _stateLiveData.value = CountryState.Error(R.string.could_not_get_list)
             }
         }
     }
 
     fun saveCountry(country: Area) {
-        filterParameters.country = Country(country.id!!, country.name)
+        if(country.name == "Другое"){
+            filterParameters.country = Country(country.id!!, "Другие регионы")
+        }else{
+            filterParameters.country = Country(country.id!!, country.name)
+        }
     }
 }
