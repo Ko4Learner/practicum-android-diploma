@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.presentation.ui.filter.workplace.country
 
-import androidx.core.content.ContextCompat.getString
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -44,9 +43,9 @@ class SelectCountryViewModel(
     }
 
     fun saveCountry(country: Area) {
-        if(country.name == "Другое"){
+        if (country.name == "Другое") {
             filterParameters.country = Country(country.id!!, "Другие регионы")
-        }else{
+        } else {
             filterParameters.country = Country(country.id!!, country.name)
         }
     }
