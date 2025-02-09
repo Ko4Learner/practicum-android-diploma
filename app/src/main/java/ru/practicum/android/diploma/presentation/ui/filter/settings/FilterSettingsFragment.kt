@@ -112,7 +112,7 @@ class FilterSettingsFragment : Fragment() {
         setupButtonListeners()
         binding.apply {
             toolbar.setOnClickListener {
-                viewModel.saveFilterParameters()
+                viewModel.saveFilterParameters(false)
                 findNavController().popBackStack()
             }
             textViewArea.setOnClickListener {
@@ -133,7 +133,7 @@ class FilterSettingsFragment : Fragment() {
     private fun setupButtonListeners() {
         binding.apply {
             enterFilter.setOnClickListener {
-                viewModel.saveFilterParameters()
+                viewModel.saveFilterParameters(true)
                 findNavController().popBackStack()
             }
             resetFilter.setOnClickListener {
@@ -195,7 +195,7 @@ class FilterSettingsFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                viewModel.saveFilterParameters()
+                viewModel.saveFilterParameters(false)
                 findNavController().popBackStack()
             }
         })
