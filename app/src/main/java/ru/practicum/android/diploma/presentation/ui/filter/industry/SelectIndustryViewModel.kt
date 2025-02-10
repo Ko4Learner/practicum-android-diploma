@@ -92,15 +92,6 @@ class SelectIndustryViewModel(
     }
 
     fun chooseIndustry(industry: Industry?) {
-//        viewModelScope.launch {
-//            filterParametersInteractor.getParameters().collect {
-//                if (it.industry?.id != industry?.id) {
-//                    it.industry = industry
-//                    filterParametersInteractor.saveParameters(it)
-//                }
-//            }
-//        }
-
         filterParameters.industry = Industry(industry!!.id, industry.name)
     }
 
