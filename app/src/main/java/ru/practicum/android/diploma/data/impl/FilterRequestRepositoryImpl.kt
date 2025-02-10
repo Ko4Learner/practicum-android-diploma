@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.data.impl
 
-import android.content.Context
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.AreaDto
@@ -12,61 +11,70 @@ import ru.practicum.android.diploma.domain.api.FilterRequestRepository
 import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Resource
-import ru.practicum.android.diploma.util.isConnected
 
 class FilterRequestRepositoryImpl(
-    private val networkClient: NetworkClient,
-    private val context: Context
+    private val networkClient: NetworkClient
 ) : FilterRequestRepository {
     override fun getCountries(): Flow<Resource<List<Area>>> = flow {
-        if (isConnected(context)) {
-            val response = networkClient.doRequest(Request.CountriesRequest)
-            val result: Resource<List<Area>> = if (response.resultCode == SUCCESSFUL_REQUEST) {
+        val response = networkClient.doRequest(Request.CountriesRequest)
+        val result: Resource<List<Area>> = when (response.resultCode) {
+            SUCCESSFUL_REQUEST -> {
                 val countries = (response as AreasResponse).areas.map { it.toDomain() }
                 Resource.Success(countries)
-            } else {
+            }
+
+            CONNECT_ERR -> {
+                Resource.Error(NO_CONNECTION)
+            }
+
+            else -> {
                 Resource.Error(BAD_REQUEST)
             }
-            emit(result)
-        } else {
-            emit(Resource.Error(NO_CONNECTION))
         }
+        emit(result)
+
     }
 
     override fun getAreasById(areaId: String): Flow<Resource<List<Area>>> = flow {
-        if (isConnected(context)) {
-            val response = networkClient.doRequest(Request.AreasByIdRequest(areaId))
-            val result: Resource<List<Area>> = if (response.resultCode == SUCCESSFUL_REQUEST) {
+        val response = networkClient.doRequest(Request.AreasByIdRequest(areaId))
+        val result: Resource<List<Area>> = when (response.resultCode) {
+            SUCCESSFUL_REQUEST -> {
                 val areas = mergeAreas((response as AreasResponse).areas)
                 Resource.Success(areas)
-            } else {
+            }
+            CONNECT_ERR -> {
+                Resource.Error(NO_CONNECTION)
+            }
+            else -> {
                 Resource.Error(BAD_REQUEST)
             }
-            emit(result)
-        } else {
-            emit(Resource.Error(NO_CONNECTION))
         }
+        emit(result)
     }
 
     override fun getAreas(): Flow<Resource<List<Area>>> = flow {
-        if (isConnected(context)) {
-            val response = networkClient.doRequest(Request.AreasRequest)
-            val result: Resource<List<Area>> = if (response.resultCode == SUCCESSFUL_REQUEST) {
+        val response = networkClient.doRequest(Request.AreasRequest)
+        val result: Resource<List<Area>> = when (response.resultCode) {
+            SUCCESSFUL_REQUEST -> {
                 val areas = mergeAreas((response as AreasResponse).areas)
                 Resource.Success(areas)
-            } else {
+            }
+
+            CONNECT_ERR -> {
+                Resource.Error(NO_CONNECTION)
+            }
+
+            else -> {
                 Resource.Error(BAD_REQUEST)
             }
-            emit(result)
-        } else {
-            emit(Resource.Error(NO_CONNECTION))
         }
+        emit(result)
     }
 
     override fun getIndustries(): Flow<Resource<List<Industry>>> = flow {
-        if (isConnected(context)) {
-            val response = networkClient.doRequest(Request.Industries)
-            val result: Resource<List<Industry>> = if (response.resultCode == SUCCESSFUL_REQUEST) {
+        val response = networkClient.doRequest(Request.Industries)
+        val result: Resource<List<Industry>> = when (response.resultCode) {
+            SUCCESSFUL_REQUEST -> {
                 val industries = (response as IndustriesResponse).industries.map {
                     Industry(
                         it.id,
@@ -74,13 +82,17 @@ class FilterRequestRepositoryImpl(
                     )
                 }
                 Resource.Success(industries)
-            } else {
+            }
+
+            CONNECT_ERR -> {
+                Resource.Error(NO_CONNECTION)
+            }
+
+            else -> {
                 Resource.Error(BAD_REQUEST)
             }
-            emit(result)
-        } else {
-            emit(Resource.Error(NO_CONNECTION))
         }
+        emit(result)
     }
 
     private fun mergeAreas(areas: List<AreaDto>): List<Area> {
@@ -123,6 +135,7 @@ class FilterRequestRepositoryImpl(
     companion object {
         private const val NO_CONNECTION = "NO_CONNECTION"
         private const val BAD_REQUEST = "BAD_REQUEST"
+        private const val CONNECT_ERR = 300
         private const val SUCCESSFUL_REQUEST = 200
     }
 }

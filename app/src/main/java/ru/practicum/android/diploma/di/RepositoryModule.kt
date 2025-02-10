@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.di
 
-import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import ru.practicum.android.diploma.data.impl.FavouritesRepositoryImpl
 import ru.practicum.android.diploma.data.impl.FilterParametersRepositoryImpl
@@ -26,6 +25,6 @@ val repositoryModule = module {
     }
 
     single<FilterRequestRepository> {
-        FilterRequestRepositoryImpl(get(), androidContext())
+        FilterRequestRepositoryImpl(get())
     }
 }
