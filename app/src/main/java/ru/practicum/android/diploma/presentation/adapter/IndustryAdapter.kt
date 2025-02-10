@@ -10,10 +10,10 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Industry
 
 class IndustryAdapter(
-    private val onItemClick: (Int?, Boolean) -> Unit
+    private val onItemClick: (Industry?, Int?, Boolean) -> Unit
 ) : RecyclerView.Adapter<IndustryAdapter.IndustryViewHolder>() {
     var industries = emptyList<Industry>()
-    private var selectedItem: Int? = null
+    var selectedItem: Industry? = null
 
     inner class IndustryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val text: TextView = itemView.findViewById(R.id.industryName)
@@ -37,11 +37,11 @@ class IndustryAdapter(
         val radioButton = holder.itemView.findViewById<RadioButton>(R.id.industryRadioButton)
 
         holder.itemView.setOnClickListener {
-            val isSame = holder.adapterPosition != selectedItem
+            val isSame = industries[holder.adapterPosition].id != selectedItem?.id
             radioButton.isChecked = isSame
-            onItemClick(selectedItem, isSame)
+            onItemClick(selectedItem, industries.indexOf(selectedItem), isSame)
             selectedItem = if (isSame) {
-                holder.adapterPosition
+                industries[holder.adapterPosition]
             } else {
                 null
             }
@@ -49,15 +49,11 @@ class IndustryAdapter(
 
         radioButton.isClickable = false
 
-        radioButton.isChecked = position == selectedItem
+        radioButton.isChecked = industries[position].id == selectedItem?.id
     }
 
     fun clear() {
         selectedItem = null
         industries = emptyList()
-    }
-
-    fun getSelectedItemId(): Industry? {
-        return if (selectedItem != null) industries[selectedItem!!] else null
     }
 }

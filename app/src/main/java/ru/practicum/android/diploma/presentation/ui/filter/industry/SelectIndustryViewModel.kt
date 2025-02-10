@@ -16,6 +16,7 @@ class SelectIndustryViewModel(
     private val filterParameters: FilterParameters
 ) : ViewModel() {
     private val industryStateLiveData = MutableLiveData<IndustryContentState>()
+    private var chosenIndustry: Industry? = filterParameters.industry
     private var lastSearch = ""
     val searchDebounce = debounce<String>(
         SEARCH_DEBOUNCE_DELAY,
@@ -30,6 +31,10 @@ class SelectIndustryViewModel(
 
     fun getIndustryStateLiveData(): LiveData<IndustryContentState> = industryStateLiveData
 
+    fun selectIndustry(industry: Industry?) {
+        chosenIndustry = industry
+    }
+
     fun getIndustries() {
         viewModelScope.launch {
             industryStateLiveData.postValue(IndustryContentState.Loading)
@@ -40,7 +45,10 @@ class SelectIndustryViewModel(
                             industryStateLiveData.postValue(IndustryContentState.Error)
                         } else {
                             industryStateLiveData.postValue(
-                                IndustryContentState.Content(result.data.sortedBy { it.name })
+                                IndustryContentState.Content(
+                                    chosenIndustry,
+                                    result.data.sortedBy { it.name }
+                                )
                             )
                         }
                     }
@@ -67,7 +75,10 @@ class SelectIndustryViewModel(
                             industryStateLiveData.postValue(IndustryContentState.Error)
                         } else {
                             industryStateLiveData.postValue(
-                                IndustryContentState.Content(findItems.sortedBy { it.name })
+                                IndustryContentState.Content(
+                                    chosenIndustry,
+                                    result.data.sortedBy { it.name }
+                                )
                             )
                         }
                     }
@@ -81,6 +92,15 @@ class SelectIndustryViewModel(
     }
 
     fun chooseIndustry(industry: Industry?) {
+//        viewModelScope.launch {
+//            filterParametersInteractor.getParameters().collect {
+//                if (it.industry?.id != industry?.id) {
+//                    it.industry = industry
+//                    filterParametersInteractor.saveParameters(it)
+//                }
+//            }
+//        }
+
         filterParameters.industry = Industry(industry!!.id, industry.name)
     }
 
