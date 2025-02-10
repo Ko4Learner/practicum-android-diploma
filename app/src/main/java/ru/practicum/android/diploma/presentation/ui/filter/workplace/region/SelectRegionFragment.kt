@@ -120,4 +120,3 @@ class SelectRegionFragment : Fragment() {
         _binding = null
     }
 }
-

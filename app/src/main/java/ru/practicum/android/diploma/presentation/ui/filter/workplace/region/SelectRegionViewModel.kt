@@ -142,4 +142,3 @@ class SelectRegionViewModel(
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
-
