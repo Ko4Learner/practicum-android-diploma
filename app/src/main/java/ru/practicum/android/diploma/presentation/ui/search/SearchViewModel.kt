@@ -76,7 +76,7 @@ class SearchViewModel(
             filterInteractor.getParameters().collect { param ->
                 if (filterParameters != param) {
                     filterParameters = param
-                    if (lastSearch != "") {
+                    if (lastSearch != "" && filterParameters!!.updateSearch) {
                         startSearch(lastSearch, 0)
                     }
                 }

@@ -66,7 +66,8 @@ class FilterSettingsViewModel(
         applyButtonLiveData.postValue(filterParameters != sharedPreferencesFilter)
     }
 
-    fun saveFilterParameters() {
+    fun saveFilterParameters(updateSearch: Boolean) {
+        filterParameters.updateSearch = updateSearch
         viewModelScope.launch { filterInteractor.saveParameters(filterParameters) }
         sharedPreferencesFilter = filterParameters.copy()
         equalsFilters()
