@@ -16,10 +16,10 @@ class FilterRequestRepositoryImpl(
     private val networkClient: NetworkClient
 ) : FilterRequestRepository {
     override fun getCountries(): Flow<Resource<List<Area>>> = flow {
-        val response = networkClient.doRequest(Request.CountriesRequest)
+        val response = networkClient.doRequest(Request.AreasRequest)
         val result: Resource<List<Area>> = when (response.resultCode) {
             SUCCESSFUL_REQUEST -> {
-                val countries = (response as AreasResponse).areas.map { it.toDomain() }
+                val countries = selectCountries((response as AreasResponse).areas)
                 Resource.Success(countries)
             }
 
@@ -42,9 +42,11 @@ class FilterRequestRepositoryImpl(
                 val areas = mergeAreas((response as AreasResponse).areas)
                 Resource.Success(areas)
             }
+
             CONNECT_ERR -> {
                 Resource.Error(NO_CONNECTION)
             }
+
             else -> {
                 Resource.Error(BAD_REQUEST)
             }
@@ -110,6 +112,17 @@ class FilterRequestRepositoryImpl(
         return result.sortedBy { it.name }
     }
 
+    private fun selectCountries(areas: List<AreaDto>): List<Area> {
+        val countries = mutableListOf<Area>()
+        areas.forEach {
+            if (it.parentId == null && it.id != ELSE_AREAS_ID) countries.add(it.toDomain())
+        }
+        areas.forEach {
+            if (it.id == ELSE_AREAS_ID) countries.add(it.toDomain())
+        }
+        return countries
+    }
+
     private fun changeParentId(areas: List<Area>, parentId: String?): List<Area> {
         return if (parentId != null) {
             areas.map {
@@ -133,6 +146,7 @@ class FilterRequestRepositoryImpl(
     }
 
     companion object {
+        private const val ELSE_AREAS_ID = "1001"
         private const val NO_CONNECTION = "NO_CONNECTION"
         private const val BAD_REQUEST = "BAD_REQUEST"
         private const val CONNECT_ERR = 300
