@@ -89,11 +89,27 @@ class FilterRequestRepositoryImpl(
             areas.forEach {
                 if (it.parentId != null) result.add(it.toDomain())
                 it.areas?.let { areas ->
-                    result.addAll(mergeAreas(areas))
+                    val mergedAreas = changeParentId(mergeAreas(areas), it.parentId)
+                    result.addAll(mergedAreas)
                 }
+
             }
         }
         return result.sortedBy { it.name }
+    }
+
+    private fun changeParentId(areas: List<Area>, parentId: String?): List<Area> {
+        return if (parentId != null) {
+            areas.map {
+                Area(
+                    it.id,
+                    parentId,
+                    it.name
+                )
+            }
+        } else {
+            areas
+        }
     }
 
     private fun AreaDto.toDomain(): Area {
