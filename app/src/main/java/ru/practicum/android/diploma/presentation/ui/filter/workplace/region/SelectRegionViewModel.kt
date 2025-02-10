@@ -61,6 +61,8 @@ class SelectRegionViewModel(
             val currentList = initListAreas.filter { it.name.startsWith(request, true) }
             if (currentList.isNotEmpty()) {
                 screenState.postValue(SearchRegionScreenState.ShowAreas(currentList))
+            } else {
+                screenState.postValue(SearchRegionScreenState.NoAreas)
             }
         } else {
             screenState.postValue(SearchRegionScreenState.ShowAreas(initListAreas))
