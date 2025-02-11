@@ -18,8 +18,9 @@ class SelectIndustryFragment : Fragment() {
     private var _binding: FragmentSelectIndustryBinding? = null
     private val binding: FragmentSelectIndustryBinding get() = _binding!!
     private val viewModel: SelectIndustryViewModel by viewModel()
-    private val adapter = IndustryAdapter { oldPosition, isSame ->
+    private val adapter = IndustryAdapter { selectedItem, oldPosition, isSame ->
         binding.chooseIndustry.isVisible = isSame
+        viewModel.selectIndustry(selectedItem)
         if (oldPosition != null) {
             binding.recyclerView.adapter?.notifyItemChanged(oldPosition)
         }
@@ -36,6 +37,7 @@ class SelectIndustryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.getIndustries()
 
         viewModel.getIndustryStateLiveData().observe(viewLifecycleOwner) {
@@ -44,7 +46,7 @@ class SelectIndustryFragment : Fragment() {
 
         binding.chooseIndustry.setOnClickListener {
             viewModel.chooseIndustry(
-                (binding.recyclerView.adapter as IndustryAdapter).getSelectedItemId()
+                (binding.recyclerView.adapter as IndustryAdapter).selectedItem
             )
             findNavController().navigateUp()
         }
@@ -78,6 +80,7 @@ class SelectIndustryFragment : Fragment() {
         when (state) {
             is IndustryContentState.Content -> {
                 adapter.industries = state.data
+                adapter.selectedItem = state.industry
                 binding.recyclerView.adapter = adapter
             }
 
