@@ -70,7 +70,7 @@ class SelectCountryFragment : Fragment() {
     private fun render(state: CountryState) {
         when (state) {
             is CountryState.Error -> {
-                showError(state.errorMessage)
+                showError(state.message)
             }
 
             is CountryState.Loading -> {
@@ -98,9 +98,9 @@ class SelectCountryFragment : Fragment() {
         binding.progressBar.isVisible = true
     }
 
-    private fun showError(errorMessage: String) {
+    private fun showError(message: Int) {
         binding.CountryRecyclerView.isVisible = false
-        binding.textPlaceholder.text = errorMessage
+        binding.textPlaceholder.setText(message)
         binding.textPlaceholder.isVisible = true
         binding.imagePlaceholder.isVisible = true
         binding.progressBar.isVisible = false

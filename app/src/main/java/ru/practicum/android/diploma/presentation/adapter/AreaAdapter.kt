@@ -21,8 +21,13 @@ class AreaAdapter : RecyclerView.Adapter<AreaAdapter.AreaViewHolder>() {
 
     inner class AreaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val text: TextView = itemView.findViewById(R.id.textCard)
+
         fun bind(model: Area) {
-            text.text = model.name
+            if (model.name == "Другое") {
+                text.setText(R.string.other_region)
+            } else {
+                text.text = model.name
+            }
         }
     }
 

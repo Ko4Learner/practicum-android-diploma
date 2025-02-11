@@ -34,8 +34,6 @@ class RetrofitNetworkClient(
 
                         is Request.VacancyRequest -> VacancyResponse(vacancyService.getVacancy(dto.id))
 
-                        is Request.CountriesRequest -> AreasResponse(vacancyService.getCountries())
-
                         is Request.AreasByIdRequest -> vacancyService.getAreasById(dto.id)
 
                         is Request.AreasRequest -> AreasResponse(vacancyService.getAreas())

@@ -9,4 +9,12 @@ class SelectWorkplaceViewModel(
     fun getFilterParameters(): FilterParameters {
         return filterParameters
     }
+
+    fun clearCountry() {
+        filterParameters.country = null
+    }
+
+    fun clearRegion() {
+        filterParameters.area = null
+    }
 }

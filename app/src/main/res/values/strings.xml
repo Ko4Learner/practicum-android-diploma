@@ -77,5 +77,7 @@
     <string name="employment">%1$s занятость</string>
 
     <string name="item_filter_area" translatable="false">%1$s, %2$s</string>
+    <string name="other_region">Другие регионы</string>
+    <string name="other">Другое</string>
 
 </resources>

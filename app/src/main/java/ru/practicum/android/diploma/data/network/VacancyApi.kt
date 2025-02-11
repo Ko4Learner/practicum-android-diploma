@@ -31,13 +31,6 @@ interface VacancyApi {
         "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
         "HH-User-Agent: Application Practicum_17_android_team"
     )
-    @GET("/areas/countries")
-    suspend fun getCountries(): List<AreaDto>
-
-    @Headers(
-        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
-        "HH-User-Agent: Application Practicum_17_android_team"
-    )
     @GET("/industries")
     suspend fun getIndustries(): List<IndustryDto>
 

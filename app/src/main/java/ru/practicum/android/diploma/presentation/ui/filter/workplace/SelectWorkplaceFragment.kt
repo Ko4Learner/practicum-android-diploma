@@ -38,37 +38,47 @@ class SelectWorkplaceFragment : Fragment() {
     private fun setupUI() {
         val filterParameters = viewModel.getFilterParameters()
 
-        if (filterParameters.country != null) {
-            binding.textViewCountry.text = filterParameters.country!!.name
-            binding.iconCountry.setImageResource(R.drawable.del_search_string_icon_24dp)
-        } else {
-            binding.iconCountry.setImageResource(R.drawable.arrow_forward)
-            binding.textViewCountry.setOnClickListener {
-                findNavController().navigate(R.id.action_selectWorkplaceFragment_to_selectCountryFragment)
-            }
-        }
+        binding.textViewCountry.text = filterParameters.country?.name ?: EMPTY_TEXT
+        binding.textViewRegion.text = filterParameters.area?.name ?: EMPTY_TEXT
 
-        if (filterParameters.area != null) {
-            binding.textViewRegion.text = filterParameters.area!!.name
-            binding.iconRegion.setImageResource(R.drawable.del_search_string_icon_24dp)
-        } else {
-            binding.iconRegion.setImageResource(R.drawable.arrow_forward)
-            binding.textViewRegion.setOnClickListener {
-                findNavController().navigate(R.id.action_selectWorkplaceFragment_to_selectRegionFragment)
+        binding.iconCountry.setImageResource(
+            if (filterParameters.country != null) {
+                R.drawable.del_search_string_icon_24dp
+            } else {
+                R.drawable.arrow_forward
             }
-        }
+        )
+
+        binding.iconRegion.setImageResource(
+            if (filterParameters.area != null) {
+                R.drawable.del_search_string_icon_24dp
+            } else {
+                R.drawable.arrow_forward
+            }
+        )
+
+        binding.textViewCountry.setOnClickListener { navigateToCountrySelection() }
+        binding.textViewRegion.setOnClickListener { navigateToRegionSelection() }
 
         buttonProcessing()
-
-        binding.textViewCountry.setOnClickListener {
-            findNavController().navigate(R.id.action_selectWorkplaceFragment_to_selectCountryFragment)
-        }
-
-        binding.textViewRegion.setOnClickListener {
-            findNavController().navigate(R.id.action_selectWorkplaceFragment_to_selectRegionFragment)
-        }
-
         updateSaveButtonVisibility()
+
+        binding.iconCountry.setOnClickListener {
+            if (binding.textViewCountry.text.isNotEmpty()) {
+                clearCountryAndRegion()
+            } else {
+                navigateToCountrySelection()
+            }
+
+        }
+
+        binding.iconRegion.setOnClickListener {
+            if (binding.textViewRegion.text.isNotEmpty()) {
+                clearRegion()
+            } else {
+                navigateToRegionSelection()
+            }
+        }
 
         binding.saveButton.setOnClickListener {
             findNavController().popBackStack()
@@ -79,7 +89,11 @@ class SelectWorkplaceFragment : Fragment() {
         binding.iconCountry.setOnClickListener {
             if (binding.textViewCountry.text.isNotEmpty()) {
                 binding.textViewCountry.text = EMPTY_TEXT
+                binding.textViewRegion.text = EMPTY_TEXT
                 binding.iconCountry.setImageResource(R.drawable.arrow_forward)
+                binding.iconRegion.setImageResource(R.drawable.arrow_forward)
+                viewModel.clearRegion()
+                viewModel.clearCountry()
                 updateSaveButtonVisibility()
             } else {
                 findNavController().navigate(R.id.action_selectWorkplaceFragment_to_selectCountryFragment)
@@ -89,10 +103,28 @@ class SelectWorkplaceFragment : Fragment() {
         binding.iconRegion.setOnClickListener {
             if (binding.textViewRegion.text.isNotEmpty()) {
                 binding.textViewRegion.text = EMPTY_TEXT
+                viewModel.clearRegion()
+                binding.iconRegion.setImageResource(R.drawable.arrow_forward)
             } else {
                 findNavController().navigate(R.id.action_selectWorkplaceFragment_to_selectRegionFragment)
             }
         }
+    }
+
+    private fun clearCountryAndRegion() {
+        binding.textViewCountry.text = EMPTY_TEXT
+        binding.textViewRegion.text = EMPTY_TEXT
+        binding.iconCountry.setImageResource(R.drawable.arrow_forward)
+        binding.iconRegion.setImageResource(R.drawable.arrow_forward)
+        viewModel.clearCountry()
+        viewModel.clearRegion()
+        updateSaveButtonVisibility()
+    }
+
+    private fun clearRegion() {
+        binding.textViewRegion.text = EMPTY_TEXT
+        binding.iconRegion.setImageResource(R.drawable.arrow_forward)
+        viewModel.clearRegion()
     }
 
     private fun updateSaveButtonVisibility() {
@@ -104,6 +136,14 @@ class SelectWorkplaceFragment : Fragment() {
         } else {
             View.GONE
         }
+    }
+
+    private fun navigateToCountrySelection() {
+        findNavController().navigate(R.id.action_selectWorkplaceFragment_to_selectCountryFragment)
+    }
+
+    private fun navigateToRegionSelection() {
+        findNavController().navigate(R.id.action_selectWorkplaceFragment_to_selectRegionFragment)
     }
 
     override fun onDestroyView() {

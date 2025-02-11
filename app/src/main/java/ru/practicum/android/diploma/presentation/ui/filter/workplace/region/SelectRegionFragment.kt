@@ -66,6 +66,7 @@ class SelectRegionFragment : Fragment() {
 
         searchRegionAdapter.onItemClick = { region -> onClickRegion(region) }
         binding.apply {
+            ToolbarRegion.setOnClickListener { findNavController().popBackStack() }
             clearButton.setOnClickListener { searchRegion.setText(getString(R.string.empty_string)) }
             regionRecyclerView.adapter = searchRegionAdapter
             regionRecyclerView.layoutManager = LinearLayoutManager(
@@ -119,4 +120,3 @@ class SelectRegionFragment : Fragment() {
         _binding = null
     }
 }
-

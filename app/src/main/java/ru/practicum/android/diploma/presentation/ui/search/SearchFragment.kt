@@ -216,6 +216,8 @@ class SearchFragment : Fragment() {
                 0
             )
             errorMessageAndImg.isVisible = true
+            searchResult.setText(R.string.No_such_vacancies)
+            searchResult.isVisible = true
         }
     }
 
