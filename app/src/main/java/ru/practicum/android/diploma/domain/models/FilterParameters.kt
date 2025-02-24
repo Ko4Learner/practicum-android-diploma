@@ -5,7 +5,8 @@ class FilterParameters(
     var area: Area? = null,
     var industry: Industry? = null,
     var expectedSalary: Int? = null,
-    var onlyWithSalary: Boolean? = null
+    var onlyWithSalary: Boolean? = null,
+    var updateSearch: Boolean = false
 ) {
     companion object {
         private const val INDUSTRY = "industry"
